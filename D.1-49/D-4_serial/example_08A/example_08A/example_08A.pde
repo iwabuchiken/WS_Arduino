@@ -23,9 +23,8 @@ int love  = 0;
 int peace  = 0;
 int arduino  = 0;
 
-int numOf_kw_1;
-
-int light  = 0;
+int light  = 500;	// default
+//int light  = 0;
 
 Serial port;
 color c;
@@ -37,6 +36,12 @@ String buffer = "";  // buffer for strings from Arduino
 PFont font;
 
 String kw_1 = "economic";
+String kw_2 = "us";
+String kw_3 = "cuba";
+
+int numOf_kw_1;
+int numOf_kw_2;
+int numOf_kw_3;
 
 //const int delay_Time  = 100;  // delay time in millsec
 
@@ -104,35 +109,132 @@ void setup() {
 void draw() {
 
 //  c = color(peace, love, arduino);
-  
-  background(c);
-  
-  int n = (interval - ((millis() - lastTime)/1000));
-  
-  // construct color
-  c = color(peace, love, arduino);
-  
-  cs = "#" + hex(c,6);  // prep the string to Arduino
-  
-  text("Arduino Networked Lamp", 10, 40);
-  
-  ///////////////////////////////////
-  //
-  // update: color data
-  //
-  ///////////////////////////////////
-  if (n <= 0) {
+	
+	background(c);
+	
+	int n = (interval - ((millis() - lastTime)/1000));
+	
+	// construct color
+//	c = color(0, 184, 40);
+	c = color(numOf_kw_1, numOf_kw_2, numOf_kw_3);
+//	c = color(peace, love, arduino);
+	
+	cs = "#" + hex(c,6);  // prep the string to Arduino
+	
+	text("Arduino Networked Lamp", 10, 40);
+	
+	///////////////////////////////////
+	//
+	// color info
+	//
+	///////////////////////////////////
+	text("light level", 10, 380);
+	
+	rect(200, 352, light/10.23, 28);
+	
+	///////////////////////////////////
+	//
+	// update: color data
+	//
+	///////////////////////////////////
+	if (n <= 0) {
 
-    fetchData();
-    
-    lastTime = millis();
-    
-    println("lastTime => updated: " + lastTime + "(cs = " + cs + ")");
+		fetchData();
+		
+		lastTime = millis();
+		
+		println("lastTime => updated: " + lastTime + "(cs = " + cs + ")");
 
-  }//if (n <= 0)
-  
-//  fetchData();
-  
+	}//if (n <= 0)
+	
+	///////////////////////////////////
+	//
+	// send data
+	//
+	///////////////////////////////////
+	if (port != null) {
+
+		port.write(cs);
+
+		String msg;
+		msg = String.format(Locale.JAPAN, "[%s : %d] cs = %s", Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber(), cs);
+
+		System.out.println(msg);
+		
+	}//if (port != null)
+	
+	///////////////////////////////////
+	//
+	// read data: from arduino
+	//
+	///////////////////////////////////
+	if (port != null && port.available() > 0) {
+
+		int inByte = port.read();	// read 1 byte
+		
+		// validate: newline(LF)?
+		if (inByte != 10) {
+
+			buffer = buffer + char(inByte);
+
+//			String msg;
+//			msg = String.format(Locale.JAPAN, "[%s : %d] buffer = %s", Thread
+//					.currentThread().getStackTrace()[1].getFileName(), Thread
+//					.currentThread().getStackTrace()[1].getLineNumber(), buffer);
+//
+//			System.out.println(msg);
+			
+		}//if (inByte != 10)
+		
+		else {
+			
+			// validate: any data
+			if (buffer.length() > 1) {
+
+				buffer = buffer.substring(0, buffer.length() - 1);
+				
+				light = int(buffer);
+
+				String msg;
+				msg = String.format(Locale.JAPAN, "[%s : %d] buffer = %s", Thread
+						.currentThread().getStackTrace()[1].getFileName(),
+						Thread.currentThread().getStackTrace()[1]
+								.getLineNumber(), buffer);
+
+				System.out.println(msg);
+				
+				// clear buffer
+				buffer = "";
+				
+				// clear port
+				port.clear();
+
+			}//if (buffer.length() > 1)
+			
+//			// newlie arrived
+//			String msg;
+//			msg = String.format(Locale.JAPAN, 
+//					"[%s : %d] new line! => %d (buffer = %s)", 
+//					Thread.currentThread().getStackTrace()[1].getFileName(), 
+//					Thread.currentThread().getStackTrace()[1].getLineNumber(), 
+//					
+//					inByte, buffer
+//			);
+//
+//			System.out.println(msg);
+			
+//			// clear buffer
+//			buffer = "";
+//			
+//			// clear port
+//			port.clear();
+			
+		}//if (inByte != 10)
+
+	}//if (port != null && port.available() > 0)
+	
 }//draw()
 
 void fetchData() {
@@ -143,7 +245,9 @@ void fetchData() {
 
 //	  String kw_1 = "economic";
 
-	  int numOf_kw_1 = 0;
+//	  int numOf_kw_1 = 0;
+//	  int numOf_kw_2 = 0;
+//	  int numOf_kw_3 = 0;
 	  
 	  // init counters => 0
 	//  peace = (int)random(255);
@@ -229,7 +333,13 @@ void fetchData() {
 					
 							numOf_kw_1 ++;
 					
-				//if (chunk.lastIndexOf("love") >= 0)
+				if (chunk.lastIndexOf(kw_2) >= 0) 
+					
+					numOf_kw_2 ++;
+				
+				if (chunk.lastIndexOf(kw_3) >= 0) 
+					
+					numOf_kw_3 ++;
 				
 			}//while(st.hasMoreTokens())
 			
@@ -247,6 +357,10 @@ void fetchData() {
 		if (love > 64) love = 64;
 		if (arduino > 64) arduino = 64;
 		
+		if (numOf_kw_1 > 64) numOf_kw_1 = 64;
+		if (numOf_kw_2 > 64) numOf_kw_2 = 64;
+		if (numOf_kw_3 > 64) numOf_kw_3 = 64;
+		
 //		String msg;
 		msg = String.format(Locale.JAPAN, 
 				"[%s : %d] peace = %d / love = %d / ard = %d / numOf_kw_1 = %d", 
@@ -258,11 +372,37 @@ void fetchData() {
 
 		System.out.println(msg);
 
+		msg = String.format(Locale.JAPAN, 
+				"[%s : %d] kw_1 = %s (%d) / kw_2 = %s (%d) / kw_3 = %s (%d)", 
+				Thread.currentThread()
+				.getStackTrace()[1].getFileName(), Thread.currentThread()
+				.getStackTrace()[1].getLineNumber(), 
+				kw_1, numOf_kw_1, kw_2, numOf_kw_2, kw_3, numOf_kw_3
+				);
+		
+		System.out.println(msg);
+		
 		
 		// finalize the numbers
 		peace = peace * 4;
 		love = love * 4;
 		arduino = arduino * 4;
+		
+		numOf_kw_1 = numOf_kw_1 * 4;
+		numOf_kw_2 = numOf_kw_2 * 4;
+		numOf_kw_3 = numOf_kw_3 * 4;
+		
+		System.out.println(msg);
+		
+		msg = String.format(Locale.JAPAN, 
+				"[%s : %d] kw_1 = %s (%d) / kw_2 = %s (%d) / kw_3 = %s (%d)", 
+				Thread.currentThread()
+				.getStackTrace()[1].getFileName(), Thread.currentThread()
+				.getStackTrace()[1].getLineNumber(), 
+				kw_1, numOf_kw_1, kw_2, numOf_kw_2, kw_3, numOf_kw_3
+				);
+		
+		System.out.println(msg);
 		
 //	    String msg;
 //	    msg = String.format("[%s : %d] executing fetch...", Thread

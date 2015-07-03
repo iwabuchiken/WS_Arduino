@@ -132,18 +132,82 @@ void draw() {
 
 			// update: time_Prev
 			time_Prev = time_Cur;
+
 			
 		}//if (diff > 2000)
 		
 	}//if (port != null)
-	
+
 	///////////////////////////////////
 	//
 	// read data: from arduino
 	//
 	///////////////////////////////////
 	if (port != null && port.available() > 0) {
+		
+		int inByte = port.read();	// read 1 byte
+		
+		
+		if (inByte != 10) {
+		
+			buffer = buffer + char(inByte);
 
+			cnt_ReadByte ++;
+			
+		}//if (inByte != 10)
+		
+		else {
+		
+			// validate: any data
+			if (buffer.length() > 1) {
+
+				buffer = buffer.substring(0, buffer.length() - 1);
+				
+//					// validate: is numeric
+//					if (is_Numeric(buffer)) {
+//	
+//						light = int(buffer);
+//	
+//					}//if (is_Numeric(buffer))
+				
+//					light = int(buffer);
+
+				String msg;
+				msg = String.format(Locale.JAPAN, 
+						"[%s : %d] buffer = %s (%d bytes)", 
+						Thread
+						.currentThread().getStackTrace()[1].getFileName(),
+						Thread.currentThread().getStackTrace()[1]
+								.getLineNumber(), 
+								
+						buffer, cnt_ReadByte
+						
+				);
+
+				System.out.println(msg);
+				
+				// clear buffer
+				buffer = "";
+				
+				// clear port
+				port.clear();
+
+				// reset counter
+				cnt_ReadByte = 0;
+				
+			}//if (buffer.length() > 1)
+			
+		}//if (inByte != 10)
+		
+	}//if (port != null && port.available() > 0)
+
+	///////////////////////////////////
+	//
+	// read data: from arduino
+	//
+	///////////////////////////////////
+//	if (port != null && port.available() > 0) {
+//
 //		int inByte = port.read();	// read 1 byte
 //		
 //		// validate: newline(LF)?
@@ -222,8 +286,8 @@ void draw() {
 ////			port.clear();
 //			
 //		}//if (inByte != 10)
-
-	}//if (port != null && port.available() > 0)
+//
+//	}//if (port != null && port.available() > 0)
 	
 }//draw()
 

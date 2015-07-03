@@ -43,12 +43,18 @@ int numOf_kw_1;
 int numOf_kw_2;
 int numOf_kw_3;
 
+int cnt_ReadByte = 0;	// coutn the number of bytes read from arduino
+
+final int win_X = 800;
+final int win_Y = 500;
+
 //const int delay_Time  = 100;  // delay time in millsec
 
 void setup() {
   // put your setup code here, to run once:
 
-  size(640, 480);
+  size(win_X, win_Y);
+//  size(640, 480);
   
   frameRate(10);
   
@@ -108,6 +114,13 @@ void setup() {
 
 void draw() {
 
+	///////////////////////////////////
+	//
+	// key inputs
+	//
+	///////////////////////////////////
+	key_Input();
+	
 //  c = color(peace, love, arduino);
 	
 	background(c);
@@ -123,14 +136,43 @@ void draw() {
 	
 	text("Arduino Networked Lamp", 10, 40);
 	
+	text("Reading feed:", 10, 100);
+	
+	text(feed, 10, 140);
+	
+	text("Next update in " + n + " seconds", 10, 450);
+
+	// keywords
+	text(kw_1, 10, 200);
+	text(" " + numOf_kw_1, 200, 200);
+	
+	rect(300, 172, numOf_kw_1, 28);
+	
+	text(kw_2, 10, 240);
+	text(" " + numOf_kw_2, 200, 240);
+	
+	rect(300, 212, numOf_kw_2, 28);
+	
+	text(kw_3, 10, 280);
+	text(" " + numOf_kw_3, 200, 280);
+	
+	rect(300, 252, numOf_kw_3, 28);
+	
+	
 	///////////////////////////////////
 	//
 	// color info
 	//
 	///////////////////////////////////
+	text("sending", 10, 340);
+	text(cs, 210, 340);
+	
+	
 	text("light level", 10, 380);
 	
-	rect(200, 352, light/10.23, 28);
+	text(" " + light, 200, 380);
+	
+	rect(300, 352, light/10.23, 28);
 	
 	///////////////////////////////////
 	//
@@ -179,6 +221,8 @@ void draw() {
 
 			buffer = buffer + char(inByte);
 
+			cnt_ReadByte ++;
+			
 //			String msg;
 //			msg = String.format(Locale.JAPAN, "[%s : %d] buffer = %s", Thread
 //					.currentThread().getStackTrace()[1].getFileName(), Thread
@@ -198,10 +242,16 @@ void draw() {
 				light = int(buffer);
 
 				String msg;
-				msg = String.format(Locale.JAPAN, "[%s : %d] buffer = %s", Thread
+				msg = String.format(Locale.JAPAN, 
+						"[%s : %d] buffer = %s (%d bytes)", 
+						Thread
 						.currentThread().getStackTrace()[1].getFileName(),
 						Thread.currentThread().getStackTrace()[1]
-								.getLineNumber(), buffer);
+								.getLineNumber(), 
+								
+						buffer, cnt_ReadByte
+						
+				);
 
 				System.out.println(msg);
 				
@@ -211,6 +261,9 @@ void draw() {
 				// clear port
 				port.clear();
 
+				// reset counter
+				cnt_ReadByte = 0;
+				
 			}//if (buffer.length() > 1)
 			
 //			// newlie arrived
@@ -429,3 +482,16 @@ void fetchData() {
 	  
 }//void fetchData()
 
+void key_Input() {
+	
+	if (keyPressed) {
+		
+	    if (key == 's') {
+	    	
+	      exit();
+	      
+	    }
+	    
+	}
+	
+}

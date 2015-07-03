@@ -239,7 +239,14 @@ void draw() {
 
 				buffer = buffer.substring(0, buffer.length() - 1);
 				
-				light = int(buffer);
+				// validate: is numeric
+				if (is_Numeric(buffer)) {
+
+					light = int(buffer);
+
+				}//if (is_Numeric(buffer))
+				
+//				light = int(buffer);
 
 				String msg;
 				msg = String.format(Locale.JAPAN, 
@@ -493,5 +500,15 @@ void key_Input() {
 	    }
 	    
 	}
+	
+}
+
+boolean is_Numeric(String str) {
+	
+	boolean result = str.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+");
+	
+	return result;
+	
+//	return false;
 	
 }

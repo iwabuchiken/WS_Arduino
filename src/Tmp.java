@@ -170,5 +170,14 @@ public class Tmp {
 		  
 		}//void fetchData()
 
+	boolean is_Numeric(String str) {
+		
+		boolean result = str.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+");
+		
+		return result;
+		
+//		return false;
+		
+	}
 	
 }

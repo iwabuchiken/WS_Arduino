@@ -24,7 +24,8 @@ byte  r = 0;
 byte  g = 0;
 byte  b = 0;
 
-char  message[] = "buffer = ";
+char  message[] = "Arduino received message => ";
+//char  message[] = "buffer = ";
 
 const int delay_Time  = 100;  // delay time in millsec
 
@@ -33,15 +34,9 @@ void setup() {
 
   Serial.begin(9600);
 
-  pinMode(BUTTON, INPUT);
-  
 }
 
 void loop() {
-
-  val = analogRead(SENSOR);
-
-  Serial.println(val);
 
   ///////////////////////////////////
   //
@@ -50,9 +45,11 @@ void loop() {
   ///////////////////////////////////
   if (Serial.available() > 0) {
 
-    inByte = Serial.read();
+//    inByte = Serial.read();
     
-    while (pointer < 6) {
+//    while (pointer < 4) {
+      while (pointer < 3) {
+//      while (pointer < 6) {
       
       buffer[pointer] = Serial.read();
       
@@ -60,23 +57,14 @@ void loop() {
       
     }//while (pointer < 6)
 
-    //debug
-//    Serial.println(String.format("%s", buffer));  //=> "error: expected primary-expression before '.' token"
-
-    //REF http://stackoverflow.com/questions/17158890/transform-char-array-into-string answered Jun 18 '13 at 2:28
+  //REF http://stackoverflow.com/questions/17158890/transform-char-array-into-string answered Jun 18 '13 at 2:28
     String str(buffer);
     
     Serial.println(message + str);  //=> w
 //    Serial.println(buffer);  //=> w
-//    Serial.println(message + buffer);
-//    Serial.println("buffer = " + buffer);
     
-//    String msg;
-//    msg = String.format(Locale.JAPAN, "[%s : %d] buffer => %s", Thread
-//        .currentThread().getStackTrace()[1].getFileName(), Thread
-//        .currentThread().getStackTrace()[1].getLineNumber(), buffer);
-//
-//    System.out.println(msg);
+    // reset pointer
+    pointer = 0;
 
   }//if (Serial.available() > 0)
   

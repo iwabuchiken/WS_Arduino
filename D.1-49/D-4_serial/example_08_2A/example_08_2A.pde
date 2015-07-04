@@ -31,6 +31,10 @@ final int delay_Time  = 100;  // delay time in millsec
 int time_Cur;
 int time_Prev = 0;
 
+final int cycle	= 5000;	// cycle of sending data to arduino
+
+int time_Send_to_Arduino;
+int time_Receive_from_Arduino;
 
 void setup() {
 	// put your setup code here, to run once:
@@ -63,7 +67,23 @@ void setup() {
 	  return;
 	  
 	}//if (len < 1)
+
+	///////////////////////////////////
+	//
+	// UI
+	//
+	///////////////////////////////////
+	background(100,100,100);
 	
+	text("Arduino Networked Lamp", 10, 40);
+	
+
+
+	///////////////////////////////////
+	//
+	// communication
+	//
+	///////////////////////////////////
 	// get: arduino port
 	String arduinoPort = Serial.list()[0];
 	
@@ -100,10 +120,10 @@ void draw() {
 	///////////////////////////////////
 	key_Input();
 	
-	background(100,100,100);
-	
-	text("Arduino Networked Lamp", 10, 40);
-	
+//	background(100,100,100);
+//	
+//	text("Arduino Networked Lamp", 10, 40);
+//	
 	///////////////////////////////////
 	//
 	// send data
@@ -115,7 +135,8 @@ void draw() {
 		
 		int diff = time_Cur - time_Prev;
 		
-		if (diff > 2000) {
+		if (diff > cycle) {
+//			if (diff > 2000) {
 			
 			port.write(cs);
 //		port.write(cs);
@@ -130,6 +151,9 @@ void draw() {
 			
 			System.out.println(msg);
 
+			// record time
+			time_Send_to_Arduino = time_Cur;
+			
 			// update: time_Prev
 			time_Prev = time_Cur;
 
@@ -174,17 +198,33 @@ void draw() {
 
 				String msg;
 				msg = String.format(Locale.JAPAN, 
-						"[%s : %d] buffer = %s (%d bytes)", 
+						"[%s : %d] buffer = %s (%d bytes) (time = %d)", 
 						Thread
 						.currentThread().getStackTrace()[1].getFileName(),
 						Thread.currentThread().getStackTrace()[1]
 								.getLineNumber(), 
 								
 						buffer, cnt_ReadByte
+						, (millis() - time_Send_to_Arduino)
 						
 				);
 
 				System.out.println(msg);
+		
+//				String msg;
+				int tmp = millis();
+				
+				msg = String.format(Locale.JAPAN, 
+						"[%s : %d] millis() = %d / time_Send_to_Arduino = %d / diff = %d", 
+						Thread
+						.currentThread().getStackTrace()[1].getFileName(),
+						Thread.currentThread().getStackTrace()[1]
+								.getLineNumber(),
+						tmp, time_Send_to_Arduino, (tmp - time_Send_to_Arduino)
+				);
+
+				System.out.println(msg);
+				
 				
 				// clear buffer
 				buffer = "";
@@ -201,94 +241,6 @@ void draw() {
 		
 	}//if (port != null && port.available() > 0)
 
-	///////////////////////////////////
-	//
-	// read data: from arduino
-	//
-	///////////////////////////////////
-//	if (port != null && port.available() > 0) {
-//
-//		int inByte = port.read();	// read 1 byte
-//		
-//		// validate: newline(LF)?
-//		if (inByte != 10) {
-//
-//			buffer = buffer + char(inByte);
-//
-//			cnt_ReadByte ++;
-//			
-////			String msg;
-////			msg = String.format(Locale.JAPAN, "[%s : %d] buffer = %s", Thread
-////					.currentThread().getStackTrace()[1].getFileName(), Thread
-////					.currentThread().getStackTrace()[1].getLineNumber(), buffer);
-////
-////			System.out.println(msg);
-//			
-//		}//if (inByte != 10)
-//		
-//		else {
-//			
-//			// validate: any data
-//			if (buffer.length() > 1) {
-//
-//				buffer = buffer.substring(0, buffer.length() - 1);
-//				
-//				// validate: is numeric
-//				if (is_Numeric(buffer)) {
-//
-//					light = int(buffer);
-//
-//				}//if (is_Numeric(buffer))
-//				
-////				light = int(buffer);
-//
-//				String msg;
-//				msg = String.format(Locale.JAPAN, 
-//						"[%s : %d] buffer = %s (%d bytes)", 
-//						Thread
-//						.currentThread().getStackTrace()[1].getFileName(),
-//						Thread.currentThread().getStackTrace()[1]
-//								.getLineNumber(), 
-//								
-//						buffer, cnt_ReadByte
-//						
-//				);
-//
-//				System.out.println(msg);
-//				
-//				// clear buffer
-//				buffer = "";
-//				
-//				// clear port
-//				port.clear();
-//
-//				// reset counter
-//				cnt_ReadByte = 0;
-//				
-//			}//if (buffer.length() > 1)
-//			
-////			// newlie arrived
-////			String msg;
-////			msg = String.format(Locale.JAPAN, 
-////					"[%s : %d] new line! => %d (buffer = %s)", 
-////					Thread.currentThread().getStackTrace()[1].getFileName(), 
-////					Thread.currentThread().getStackTrace()[1].getLineNumber(), 
-////					
-////					inByte, buffer
-////			);
-////
-////			System.out.println(msg);
-//			
-////			// clear buffer
-////			buffer = "";
-////			
-////			// clear port
-////			port.clear();
-//			
-//		}//if (inByte != 10)
-//
-//	}//if (port != null && port.available() > 0)
-	
 }//draw()
 
 void key_Input() {

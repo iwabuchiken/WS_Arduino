@@ -1,34 +1,69 @@
 /*
   * D_5_s_2_LCD_2_lines.ino
   *
-  * REF: http://deviceplus.jp/hobby/entry_007/
+  * REF: http://happy-arduino.blogspot.jp/2012/02/lcd_26.html
   * 
   * 1. LCD, analog values
   */
 
-int sensorPin = A0;     //アナログ0番ピンを指定
-int sensorValue = 0;
+  #include <LiquidCrystal.h>
 
-void setup() {
-	
-	Serial.begin(9600);           //シリアルモニタに表示する為の設定
-	
+LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2);
+
+///////////////////////////////////
+//
+// vars
+//
+///////////////////////////////////
+float anain_F;
+
+//int LCD_BL=6;
+
+void setup()
+{
+//  pinMode(LCD_BL,OUTPUT);
+  
+  lcd.begin(16, 2);//16x2桁
+  lcd.clear();
+  
 }
 
-void loop() {
-	
-	sensorValue = analogRead(sensorPin);    //アナログ0番ピンからの入力値を取得
-	float temp  = modTemp(sensorValue);     //温度センサーからの入力値を変換
-	Serial.println(temp);                   //結果をシリアルモニタに表示
-	delay(500);                             //0.5秒ウェイト
+void loop()
+{
+// digitalWrite(LCD_BL,HIGH);
+  int anain ;
+  lcd.setCursor(0, 0);
+  lcd.print("CDS Input Value");
 
+  anain = analogRead(0) ;  // CDSを接続したアナログ０番ピンを読み取る
+
+  // convert
+  anain_F = modTemp(anain);
+
+  String st_anain_F(anain_F);
+  
+  delay(500);
+  
+  lcd.setCursor(0, 1);
+  
+  lcd.print(st_anain_F + " Celcius");
+//  lcd.print(st_anain_F);  //=> w
+//  lcd.print(anain_F);
+//  lcd.print(anain);
+  
 }
 
 //アナログ入力値を摂氏度℃に変換
 float modTemp(int analog_val){
-	
-	float v  = 5;     // 基準電圧値( V )
-	float tempC = ((v * analog_val) / 1024) * 100;  // 摂氏に換算
-	return tempC;
+  
+  float v  = 5;     // 基準電圧値( V )
+  float tempC = ((v * analog_val) / 1024) * 100;  // 摂氏に換算
+  return tempC;
 
 }
+
+
+
+
+
+

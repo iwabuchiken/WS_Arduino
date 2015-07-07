@@ -34,6 +34,7 @@ int anain_2;
 int anain_3;
 
 int anains[3];
+//int anains[] = {anain_1, anain_2, anain_3};
 
 void setup() {
 //  pinMode(LCD_BL,OUTPUT);
@@ -62,11 +63,11 @@ void setup() {
   // LEDs
   //
   ///////////////////////////////////
-//  pinMode(LED_1, OUTPUT);
-//  pinMode(LED_2, OUTPUT);
-//  pinMode(LED_3, OUTPUT);
-//  pinMode(LED_4, OUTPUT);
-//  pinMode(LED_5, OUTPUT);
+  pinMode(LED_1, OUTPUT);
+  pinMode(LED_2, OUTPUT);
+  pinMode(LED_3, OUTPUT);
+  pinMode(LED_4, OUTPUT);
+  pinMode(LED_5, OUTPUT);
 
 //  digitalWrite(LED_1, LOW);
 //  digitalWrite(LED_2, LOW);
@@ -92,10 +93,9 @@ void loop()
   anain_1 = analogRead(ANALOG_1) ;  // CDSを接続したアナログ０番ピンを読み取る
   anain_2 = analogRead(ANALOG_2) ;  // CDSを接続したアナログ０番ピンを読み取る
   anain_3 = analogRead(ANALOG_3) ;  // CDSを接続したアナログ０番ピンを読み取る
-
-//  anains[0] = anain_1;
-//  anains[1] = anain_2;
-//  anains[2] = anain_3;
+  
+//  anains = null;
+//  anains = {anain_1, anain_2, anain_3};
   
   ///////////////////////////////////
   //
@@ -117,7 +117,7 @@ void loop()
   // LEDs
   //
   ///////////////////////////////////
-//  onoff_LEDs();
+  onoff_LEDs();
 //  digitalWrite(LED_1, HIGH);
 //  digitalWrite(LED_2, HIGH);
 //  digitalWrite(LED_3, HIGH);
@@ -142,10 +142,13 @@ void onoff_LEDs() {
   // build: states array
   //
   ///////////////////////////////////
-  int anain_Max = get_Max(anains);
-
-  Serial.println(anain_Max);
+////  int anain_Max = 800;
+//  int anains[] = {1,2,3};
+//  
+//  int anain_Max = get_Max(anains);
   
+//  int[] leds = {LED_1, LED_2, LED_3, LED_4, LED_5};
+
   for(int i = 1; i < 5; i ++) {
     
     digitalWrite(leds[i], HIGH);
@@ -160,22 +163,20 @@ void onoff_LEDs() {
 
 }//void onoff_LEDs()
 
-int get_Max(int values[]) {
-//  int get_Max(values) {
+int getmax(anains) {
+//	int get_Max(anains) {
   
-  int tmp = values[0];
+  int tmp = anains[0];
   
-  int len = sizeof(values) / sizeof(int);
-//  int len = values.length;
-//  int len = values.length();
+  int len = anains.length();
   
   for(int i = 1; i < len; i ++) {
     
-    if (tmp < values[i]) {
+    if (tmp < anains[i]) {
 
-      tmp = values[i];
+      tmp = anains[i];
 
-    }//if (tmp < values[i])
+    }//if (tmp < anains[i])
     
   }
   
@@ -202,6 +203,12 @@ void splash(String message, int dur, int iter) {
   }
   
 }
+
+
+
+
+
+
 
 
 

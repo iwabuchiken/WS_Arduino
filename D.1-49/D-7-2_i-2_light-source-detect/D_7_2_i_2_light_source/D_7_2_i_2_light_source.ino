@@ -35,6 +35,9 @@ int anain_3;
 
 int anains[3];
 
+const char version[] = "7-2 s-1 s3-p3-t1";
+//const char version[] = "D-7-2 s-1 s-1-p2";
+
 void setup() {
 //  pinMode(LCD_BL,OUTPUT);
   
@@ -62,17 +65,25 @@ void setup() {
   // LEDs
   //
   ///////////////////////////////////
-//  pinMode(LED_1, OUTPUT);
-//  pinMode(LED_2, OUTPUT);
-//  pinMode(LED_3, OUTPUT);
-//  pinMode(LED_4, OUTPUT);
-//  pinMode(LED_5, OUTPUT);
+  int tmp = sizeof(leds) / sizeof(int);
+  
+//  for(int i = 0; i < tmp; i ++) {
+//    
+//    pinMode(leds[i], OUTPUT);
+//    
+//  }
+  
+  pinMode(LED_1, OUTPUT);
+  pinMode(LED_2, OUTPUT);
+  pinMode(LED_3, OUTPUT);
+  pinMode(LED_4, OUTPUT);
+  pinMode(LED_5, OUTPUT);
 
-//  digitalWrite(LED_1, LOW);
-//  digitalWrite(LED_2, LOW);
-//  digitalWrite(LED_3, LOW);
-//  digitalWrite(LED_4, LOW);
-//  digitalWrite(LED_5, LOW);
+  digitalWrite(LED_1, LOW);
+  digitalWrite(LED_2, LOW);
+  digitalWrite(LED_3, LOW);
+  digitalWrite(LED_4, LOW);
+  digitalWrite(LED_5, LOW);
 
 }//void setup()
 
@@ -81,7 +92,8 @@ void loop()
 // digitalWrite(LCD_BL,HIGH);
 //  int anain_1 ;
   lcd.setCursor(0, 0);
-  lcd.print("Detecting...");
+  lcd.print(version);
+//  lcd.print("Detecting...");
 //  lcd.print("Light source detect");
 
   ///////////////////////////////////
@@ -93,9 +105,9 @@ void loop()
   anain_2 = analogRead(ANALOG_2) ;  // CDSを接続したアナログ０番ピンを読み取る
   anain_3 = analogRead(ANALOG_3) ;  // CDSを接続したアナログ０番ピンを読み取る
 
-//  anains[0] = anain_1;
-//  anains[1] = anain_2;
-//  anains[2] = anain_3;
+  anains[0] = anain_1;
+  anains[1] = anain_2;
+  anains[2] = anain_3;
   
   ///////////////////////////////////
   //
@@ -117,7 +129,7 @@ void loop()
   // LEDs
   //
   ///////////////////////////////////
-//  onoff_LEDs();
+  onoff_LEDs();
 //  digitalWrite(LED_1, HIGH);
 //  digitalWrite(LED_2, HIGH);
 //  digitalWrite(LED_3, HIGH);
@@ -142,13 +154,55 @@ void onoff_LEDs() {
   // build: states array
   //
   ///////////////////////////////////
-  int anain_Max = get_Max(anains);
-
-  Serial.println(anain_Max);
+//  //debug
+//  for(int i = 0; i < 3; i ++) {
+//    
+//    String num(i + 1);
+//    String str("anain_" + num + " =>");
+//    
+//    Serial.println(str);
+//    
+//    Serial.println(anains[i]);
+//    
+////    Serial.println("anain_1");
+////    Serial.println(anain_1);
+////    
+////    Serial.println("anain_2");
+////    Serial.println(anain_2);
+////    
+////    Serial.println("anain_3");
+////    Serial.println(anain_3);
+//    
+//  }
   
-  for(int i = 1; i < 5; i ++) {
+  
+  int anain_Max = get_Max_Index(anains, 3);
+//  int anain_Max = get_Max_Index(anains);
+//  int anain_Max = get_Max(anains);
+
+  String str("index of the max => ");
+  
+  String num(anain_Max);
+  
+  Serial.println(str + num);
+  
+//  Serial.println(anain_Max);
+  
+  for(int i = 0; i < 5; i ++) {
+//    for(int i = 1; i < 5; i ++) {
     
-    digitalWrite(leds[i], HIGH);
+    if (i == anain_Max) {
+
+      digitalWrite(leds[i], HIGH);
+
+    } else {//if (i == anain_Max)
+      
+      digitalWrite(leds[i], LOW);
+      
+    }//if (i == anain_Max)
+    
+//    digitalWrite(leds[i], HIGH);
+//    digitalWrite(leds[i], HIGH);
     
   }
   
@@ -175,6 +229,35 @@ int get_Max(int values[]) {
 
       tmp = values[i];
 
+    }//if (tmp < values[i])
+    
+  }
+  
+  return tmp;
+  
+}
+
+int get_Max_Index(int values[], int len) {
+//  int get_Max(values) {
+  
+  int tmp = 0;
+  
+//  int len = sizeof(values) / sizeof(int);
+//  int len = values.length;
+//  int len = values.length();
+  
+  Serial.println("len of values[]");
+  Serial.println(len);
+  
+  Serial.println("values[0] =>");
+  Serial.println(values[0]);
+  
+  for(int i = 1; i < len; i ++) {
+    
+    if (values[tmp] < values[i]) {
+      
+      tmp = i;
+      
     }//if (tmp < values[i])
     
   }

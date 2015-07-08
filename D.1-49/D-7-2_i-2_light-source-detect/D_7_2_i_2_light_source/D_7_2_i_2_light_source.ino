@@ -19,7 +19,8 @@ const int LED_3   = 6;
 const int LED_4   = 7;
 const int LED_5   = 8;
 
-int leds[] = {LED_1, LED_2, LED_3, LED_4, LED_5};
+int leds[] = {0, 1, 6, 7, 8};
+//int leds[] = {LED_1, LED_2, LED_3, LED_4, LED_5};
 //int[] leds = {LED_1, LED_2, LED_3, LED_4, LED_5};
 
 int led_states[5];
@@ -35,7 +36,7 @@ int anain_3;
 
 int anains[3];
 
-const char version[] = "7-2 s-1 s3-p3-t1";
+const char version[] = "7-2 s-1 s3-p3-t3";
 //const char version[] = "D-7-2 s-1 s-1-p2";
 
 void setup() {
@@ -129,7 +130,7 @@ void loop()
   // LEDs
   //
   ///////////////////////////////////
-  onoff_LEDs();
+//  onoff_LEDs();
 //  digitalWrite(LED_1, HIGH);
 //  digitalWrite(LED_2, HIGH);
 //  digitalWrite(LED_3, HIGH);
@@ -191,13 +192,16 @@ void onoff_LEDs() {
   for(int i = 0; i < 5; i ++) {
 //    for(int i = 1; i < 5; i ++) {
     
-    if (i == anain_Max) {
+    if (i == 0) {
+//      if (i == anain_Max) {
 
-      digitalWrite(leds[i], HIGH);
+      digitalWrite(LED_1, HIGH);
+//      digitalWrite(leds[i], HIGH);
 
     } else {//if (i == anain_Max)
       
-      digitalWrite(leds[i], LOW);
+      digitalWrite(LED_1, LOW);
+//      digitalWrite(leds[i], LOW);
       
     }//if (i == anain_Max)
     
@@ -285,6 +289,10 @@ void splash(String message, int dur, int iter) {
   }
   
 }
+
+
+
+
 
 
 

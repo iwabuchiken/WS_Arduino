@@ -26,6 +26,8 @@ const int numOf_LEDs = 5;
 int led_states[] = {0, 0, 0, 0, 0};
 //int led_states[] = {LOW, LOW, LOW, LOW, LOW};
 
+int anains[3];
+
 ///////////////////////////////////
 //
 // vars
@@ -35,19 +37,16 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "D-7-2 s-2 s7p1t7";
+char version[] = "D-7-2 s-2 s7p1t8";
 
-void setup()
-{
+void setup() {
   
-//  ///////////////////////////////////
-//  //
-//  // serial
-//  //
-//  ///////////////////////////////////
-//  Serial.begin(9600);
-  
-//  pinMode(LCD_BL,OUTPUT);
+  ///////////////////////////////////
+  //
+  // serial
+  //
+  ///////////////////////////////////
+  Serial.begin(9600);
   
   lcd.begin(16, 2);//16x2桁
   lcd.clear();
@@ -63,12 +62,6 @@ void setup()
     
   }
   
-//  pinMode(LED_1, OUTPUT); // LED => output
-//  pinMode(LED_2, OUTPUT); // LED => output
-//  pinMode(LED_3, OUTPUT); // LED => output
-//  pinMode(LED_4, OUTPUT); // LED => output
-//  pinMode(LED_5, OUTPUT); // LED => output
-  
   // init -> off
   for(int i = 0; i < numOf_LEDs; i ++) {
       
@@ -77,17 +70,10 @@ void setup()
       
   }
 
-//  digitalWrite(LED_1, LOW);
-//  digitalWrite(LED_2, LOW);
-//  digitalWrite(LED_3, LOW);
-//  digitalWrite(LED_4, LOW);
-//  digitalWrite(LED_5, LOW);
-  
   // splash
   splash("Light Source!", 500, 3);
-//  splash();
   
-}
+}//void setup()
 
 void loop()
 {
@@ -108,6 +94,15 @@ void loop()
   anain_3 = analogRead(ANALOG_3) ;  // CDSを接続したアナログ０番ピンを読み取る
   
   ///////////////////////////////////
+//
+// build: anains
+//
+///////////////////////////////////
+  anains[0] = anain_1;
+  anains[1] = anain_2;
+  anains[2] = anain_3;
+  
+  ///////////////////////////////////
   //
   // conv: int to string
   //
@@ -116,11 +111,8 @@ void loop()
   String a_2(anain_2);
   String a_3(anain_3);
   
-//  anain_1 = analogRead(0) ; // CDSを接続したアナログ０番ピンを読み取る
-
   lcd.setCursor(0, 1);
   lcd.print(a_1 + " " + a_2 + " " + a_3);
-//  lcd.print(anain_1 + " " + anain_2 + " " + anain_3);
   
   delay(500);
 //  delay(500);
@@ -132,18 +124,19 @@ void loop()
         
   }
 
-//  digitalWrite(LED_1, HIGH);
-//  digitalWrite(LED_2, HIGH);
-//  digitalWrite(LED_3, HIGH);
-//  digitalWrite(LED_4, HIGH);
-//  digitalWrite(LED_5, HIGH);
-  
   delay(200);
 //  delay(100);
 
   // set => off pattern
   led_states[1] = 1;
   led_states[3] = 1;
+  
+  //test
+  int tmp = get_Max_Index(anains, 3);
+  
+  Serial.println("max index =>");
+  
+  Serial.println(tmp);
   
   // turning off
   for(int i = 0; i < numOf_LEDs; i ++) {
@@ -152,23 +145,6 @@ void loop()
 //      digitalWrite(leds[i], LOW); // initial --> LOW
         
   }
-
-//  digitalWrite(LED_1, LOW);
-//  digitalWrite(LED_2, LOW);
-//  digitalWrite(LED_3, LOW);
-//  digitalWrite(LED_4, LOW);
-//  digitalWrite(LED_5, LOW);
-
-//  ///////////////////////////////////
-//  //
-//  // test
-//  //
-//  ///////////////////////////////////
-//  Serial.println("HIGH =>");
-//  Serial.println(HIGH);
-//  
-//  Serial.println("LOW =>");
-//  Serial.println(LOW);
   
 }
 
@@ -192,5 +168,21 @@ void splash(String message, int dur, int iter) {
   
 }
 
-
-
+int get_Max_Index(int values[], int len) {
+//  int get_Max(values) {
+  
+  int tmp = 0;
+  
+  for(int i = 1; i < len; i ++) {
+    
+    if (values[tmp] < values[i]) {
+      
+      tmp = i;
+      
+    }//if (tmp < values[i])
+    
+  }
+  
+  return tmp;
+  
+}

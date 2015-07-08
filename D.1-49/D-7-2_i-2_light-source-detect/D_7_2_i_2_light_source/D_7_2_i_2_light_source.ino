@@ -31,7 +31,7 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "D-7-2 s-2 s4";
+char version[] = "D-7-2 s-2 s5";
 
 void setup()
 {
@@ -58,11 +58,17 @@ void setup()
 //  pinMode(LED_5, OUTPUT); // LED => output
   
   // init -> off
-  digitalWrite(LED_1, LOW);
-  digitalWrite(LED_2, LOW);
-  digitalWrite(LED_3, LOW);
-  digitalWrite(LED_4, LOW);
-  digitalWrite(LED_5, LOW);
+  for(int i = 0; i < numOf_LEDs; i ++) {
+      
+    digitalWrite(leds[i], LOW); // initial --> LOW
+      
+  }
+
+//  digitalWrite(LED_1, LOW);
+//  digitalWrite(LED_2, LOW);
+//  digitalWrite(LED_3, LOW);
+//  digitalWrite(LED_4, LOW);
+//  digitalWrite(LED_5, LOW);
   
   // splash
   splash("Light Source!", 500, 3);
@@ -142,5 +148,7 @@ void splash(String message, int dur, int iter) {
   }
   
 }
+
+
 
 

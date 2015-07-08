@@ -22,6 +22,10 @@ const int leds[] = {LED_1, LED_2, LED_3, LED_4, LED_5};
 
 const int numOf_LEDs = 5;
 
+// LED state
+int led_states[] = {0, 0, 0, 0, 0};
+//int led_states[] = {LOW, LOW, LOW, LOW, LOW};
+
 ///////////////////////////////////
 //
 // vars
@@ -31,10 +35,18 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "D-7-2 s-2 s6";
+char version[] = "D-7-2 s-2 s7p1t4";
 
 void setup()
 {
+  
+//  ///////////////////////////////////
+//  //
+//  // serial
+//  //
+//  ///////////////////////////////////
+//  Serial.begin(9600);
+  
 //  pinMode(LCD_BL,OUTPUT);
   
   lcd.begin(16, 2);//16x2桁
@@ -60,7 +72,8 @@ void setup()
   // init -> off
   for(int i = 0; i < numOf_LEDs; i ++) {
       
-    digitalWrite(leds[i], LOW); // initial --> LOW
+    digitalWrite(leds[i], led_states[i]); // initial --> LOW
+//    digitalWrite(leds[i], LOW); // initial --> LOW
       
   }
 
@@ -112,12 +125,12 @@ void loop()
   delay(500);
 //  delay(500);
 
-  //test
-  for(int i = 0; i < numOf_LEDs; i ++) {
-      
-      digitalWrite(leds[i], HIGH); // initial --> LOW
-        
-  }
+//  //test
+//  for(int i = 0; i < numOf_LEDs; i ++) {
+//      
+//      digitalWrite(leds[i], HIGH); // initial --> LOW
+//        
+//  }
 
 //  digitalWrite(LED_1, HIGH);
 //  digitalWrite(LED_2, HIGH);
@@ -125,19 +138,31 @@ void loop()
 //  digitalWrite(LED_4, HIGH);
 //  digitalWrite(LED_5, HIGH);
   
-  delay(100);
-  
-  for(int i = 0; i < numOf_LEDs; i ++) {
-      
-      digitalWrite(leds[i], LOW); // initial --> LOW
-        
-  }
+//  delay(200);
+////  delay(100);
+//  
+//  for(int i = 0; i < numOf_LEDs; i ++) {
+//      
+//      digitalWrite(leds[i], LOW); // initial --> LOW
+//        
+//  }
 
 //  digitalWrite(LED_1, LOW);
 //  digitalWrite(LED_2, LOW);
 //  digitalWrite(LED_3, LOW);
 //  digitalWrite(LED_4, LOW);
 //  digitalWrite(LED_5, LOW);
+
+//  ///////////////////////////////////
+//  //
+//  // test
+//  //
+//  ///////////////////////////////////
+//  Serial.println("HIGH =>");
+//  Serial.println(HIGH);
+//  
+//  Serial.println("LOW =>");
+//  Serial.println(LOW);
   
 }
 
@@ -160,8 +185,6 @@ void splash(String message, int dur, int iter) {
   }
   
 }
-
-
 
 
 

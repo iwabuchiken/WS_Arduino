@@ -14,6 +14,7 @@ const int ANALOG_3  = 2;
 
 const int LED_1    = 0;
 const int LED_2   = 1;
+const int LED_3   = 6;
 
 
 ///////////////////////////////////
@@ -25,7 +26,7 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "D-7-2 s-2 s1";
+char version[] = "D-7-2 s-2 s2";
 
 void setup()
 {
@@ -41,10 +42,12 @@ void setup()
   ///////////////////////////////////
   pinMode(LED_1, OUTPUT); // LED => output
   pinMode(LED_2, OUTPUT); // LED => output
+  pinMode(LED_3, OUTPUT); // LED => output
   
   // init -> off
   digitalWrite(LED_1, LOW);
   digitalWrite(LED_2, LOW);
+  digitalWrite(LED_3, LOW);
   
   // splash
   splash("Light Source!", 500, 3);
@@ -91,11 +94,13 @@ void loop()
   //test
   digitalWrite(LED_1, HIGH);
   digitalWrite(LED_2, HIGH);
+  digitalWrite(LED_3, HIGH);
   
   delay(100);
   
   digitalWrite(LED_1, LOW);
   digitalWrite(LED_2, LOW);
+  digitalWrite(LED_3, LOW);
   
 }
 
@@ -118,6 +123,8 @@ void splash(String message, int dur, int iter) {
   }
   
 }
+
+
 
 
 

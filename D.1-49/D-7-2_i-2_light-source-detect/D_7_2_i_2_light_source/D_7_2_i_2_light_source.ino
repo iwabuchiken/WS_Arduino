@@ -35,7 +35,7 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "D-7-2 s-2 s7p1t4";
+char version[] = "D-7-2 s-2 s7p1t7";
 
 void setup()
 {
@@ -125,12 +125,12 @@ void loop()
   delay(500);
 //  delay(500);
 
-//  //test
-//  for(int i = 0; i < numOf_LEDs; i ++) {
-//      
-//      digitalWrite(leds[i], HIGH); // initial --> LOW
-//        
-//  }
+  //test
+  for(int i = 0; i < numOf_LEDs; i ++) {
+      
+      digitalWrite(leds[i], HIGH); // initial --> LOW
+        
+  }
 
 //  digitalWrite(LED_1, HIGH);
 //  digitalWrite(LED_2, HIGH);
@@ -138,14 +138,20 @@ void loop()
 //  digitalWrite(LED_4, HIGH);
 //  digitalWrite(LED_5, HIGH);
   
-//  delay(200);
-////  delay(100);
-//  
-//  for(int i = 0; i < numOf_LEDs; i ++) {
-//      
+  delay(200);
+//  delay(100);
+
+  // set => off pattern
+  led_states[1] = 1;
+  led_states[3] = 1;
+  
+  // turning off
+  for(int i = 0; i < numOf_LEDs; i ++) {
+      
+      digitalWrite(leds[i], led_states[i]); // initial --> LOW
 //      digitalWrite(leds[i], LOW); // initial --> LOW
-//        
-//  }
+        
+  }
 
 //  digitalWrite(LED_1, LOW);
 //  digitalWrite(LED_2, LOW);
@@ -185,7 +191,6 @@ void splash(String message, int dur, int iter) {
   }
   
 }
-
 
 
 

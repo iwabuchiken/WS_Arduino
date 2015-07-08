@@ -12,11 +12,11 @@ const int ANALOG_1  = 0;
 const int ANALOG_2  = 1;
 const int ANALOG_3  = 2;
 
-const int LED_1  = 0;
-const int LED_2  = 1;
-const int LED_3  = 6;
-const int LED_4  = 7;
-const int LED_5  = 8;
+const int LED_1 = 0;
+const int LED_2 = 1;
+const int LED_3 = 6;
+const int LED_4 = 7;
+const int LED_5 = 8;
 
 const int leds[] = {LED_1, LED_2, LED_3, LED_4, LED_5};
 
@@ -31,7 +31,7 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "D-7-2 s-2 s5";
+char version[] = "D-7-2 s-2 s6";
 
 void setup()
 {
@@ -113,19 +113,31 @@ void loop()
 //  delay(500);
 
   //test
-  digitalWrite(LED_1, HIGH);
-  digitalWrite(LED_2, HIGH);
-  digitalWrite(LED_3, HIGH);
-  digitalWrite(LED_4, HIGH);
-  digitalWrite(LED_5, HIGH);
+  for(int i = 0; i < numOf_LEDs; i ++) {
+      
+      digitalWrite(leds[i], HIGH); // initial --> LOW
+        
+  }
+
+//  digitalWrite(LED_1, HIGH);
+//  digitalWrite(LED_2, HIGH);
+//  digitalWrite(LED_3, HIGH);
+//  digitalWrite(LED_4, HIGH);
+//  digitalWrite(LED_5, HIGH);
   
   delay(100);
   
-  digitalWrite(LED_1, LOW);
-  digitalWrite(LED_2, LOW);
-  digitalWrite(LED_3, LOW);
-  digitalWrite(LED_4, LOW);
-  digitalWrite(LED_5, LOW);
+  for(int i = 0; i < numOf_LEDs; i ++) {
+      
+      digitalWrite(leds[i], LOW); // initial --> LOW
+        
+  }
+
+//  digitalWrite(LED_1, LOW);
+//  digitalWrite(LED_2, LOW);
+//  digitalWrite(LED_3, LOW);
+//  digitalWrite(LED_4, LOW);
+//  digitalWrite(LED_5, LOW);
   
 }
 
@@ -148,6 +160,8 @@ void splash(String message, int dur, int iter) {
   }
   
 }
+
+
 
 
 

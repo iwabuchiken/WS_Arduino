@@ -37,7 +37,7 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "D-7-2 s-2 s7p1t8";
+char version[] = "7-2/2 s7p1t8p1t2";
 
 void setup() {
   
@@ -133,10 +133,10 @@ void loop()
   
   //test
   int tmp = get_Max_Index(anains, 3);
-  
-  Serial.println("max index =>");
-  
-  Serial.println(tmp);
+//  
+//  Serial.println("max index =>");
+//  
+//  Serial.println(tmp);
   
   // turning off
   for(int i = 0; i < numOf_LEDs; i ++) {
@@ -186,3 +186,6 @@ int get_Max_Index(int values[], int len) {
   return tmp;
   
 }
+
+
+

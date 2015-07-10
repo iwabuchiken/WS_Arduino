@@ -37,7 +37,7 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "7-2/3 s1";
+char version[] = "7-2/3 s2";
 
 void setup() {
   
@@ -140,7 +140,19 @@ void loop()
   
   // turning off
   // turn off the corresponding LED
-  digitalWrite(leds[tmp], LOW); // initial --> LOW
+  int target;
+  
+  switch(tmp) {
+  
+  case 0: target = 0; break;
+  case 1: target = 2; break;
+  case 2: target = 4; break;
+  default: target = 0;
+  
+  }
+  
+  digitalWrite(leds[target], LOW); // initial --> LOW
+//  digitalWrite(leds[tmp], LOW); // initial --> LOW
   
 //  for(int i = 0; i < numOf_LEDs; i ++) {
 //      
@@ -189,6 +201,9 @@ int get_Max_Index(int values[], int len) {
   return tmp;
   
 }
+
+
+
 
 
 

@@ -12,11 +12,11 @@ const int ANALOG_1  = 0;
 const int ANALOG_2  = 1;
 const int ANALOG_3  = 2;
 
-const int LED_1 = 0;
-const int LED_2 = 1;
-const int LED_3 = 6;
-const int LED_4 = 7;
-const int LED_5 = 8;
+const int LED_1 = 6;
+const int LED_2 = 7;
+const int LED_3 = 8;
+const int LED_4 = 9;
+const int LED_5 = 13;
 
 const int leds[] = {LED_1, LED_2, LED_3, LED_4, LED_5};
 
@@ -37,7 +37,7 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "7-2/2 s7p1t8p1t2";
+char version[] = "7-2/2 s7p1t8p1t3";
 
 void setup() {
   
@@ -133,10 +133,10 @@ void loop()
   
   //test
   int tmp = get_Max_Index(anains, 3);
-//  
-//  Serial.println("max index =>");
-//  
-//  Serial.println(tmp);
+  
+  Serial.println("max index =>");
+  
+  Serial.println(tmp);
   
   // turning off
   for(int i = 0; i < numOf_LEDs; i ++) {
@@ -186,6 +186,7 @@ int get_Max_Index(int values[], int len) {
   return tmp;
   
 }
+
 
 
 

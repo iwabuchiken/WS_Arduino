@@ -6,17 +6,18 @@
 
 #include <LiquidCrystal.h>
 
-LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2);
+LiquidCrystal lcd(13, 12, 11, 10, 9, 8, 7);
+//LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2);
 
 const int ANALOG_1  = 0;
 const int ANALOG_2  = 1;
 const int ANALOG_3  = 2;
 
-const int LED_1 = 6;
-const int LED_2 = 7;
-const int LED_3 = 8;
-const int LED_4 = 9;
-const int LED_5 = 13;
+const int LED_1 = 2;
+const int LED_2 = 3;
+const int LED_3 = 4;
+const int LED_4 = 5;
+const int LED_5 = 6;
 
 const int leds[] = {LED_1, LED_2, LED_3, LED_4, LED_5};
 
@@ -37,7 +38,7 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "7-2/3 s2";
+char version[] = "7-2/3 s3";
 
 void setup() {
   
@@ -201,6 +202,8 @@ int get_Max_Index(int values[], int len) {
   return tmp;
   
 }
+
+
 
 
 

@@ -37,7 +37,7 @@ int anain_1 ;
 int anain_2;
 int anain_3;
 
-char version[] = "7-2/2 s7p1t8p1t3";
+char version[] = "7-2/3 s1";
 
 void setup() {
   
@@ -127,9 +127,9 @@ void loop()
   delay(200);
 //  delay(100);
 
-  // set => off pattern
-  led_states[1] = 1;
-  led_states[3] = 1;
+//  // set => off pattern
+//  led_states[1] = 1;
+//  led_states[3] = 1;
   
   //test
   int tmp = get_Max_Index(anains, 3);
@@ -139,12 +139,15 @@ void loop()
   Serial.println(tmp);
   
   // turning off
-  for(int i = 0; i < numOf_LEDs; i ++) {
-      
-      digitalWrite(leds[i], led_states[i]); // initial --> LOW
-//      digitalWrite(leds[i], LOW); // initial --> LOW
-        
-  }
+  // turn off the corresponding LED
+  digitalWrite(leds[tmp], LOW); // initial --> LOW
+  
+//  for(int i = 0; i < numOf_LEDs; i ++) {
+//      
+//      digitalWrite(leds[i], led_states[i]); // initial --> LOW
+////      digitalWrite(leds[i], LOW); // initial --> LOW
+//        
+//  }
   
 }
 
@@ -186,6 +189,7 @@ int get_Max_Index(int values[], int len) {
   return tmp;
   
 }
+
 
 
 

@@ -5,4 +5,6 @@ REM http://www.tomshardware.com/forum/82733-45-stop-program-command-line
 REM taskkill /IM javaw.exe
 taskkill /IM wish.exe
 
+taskkill /IM Fritzing.exe
+
 exit

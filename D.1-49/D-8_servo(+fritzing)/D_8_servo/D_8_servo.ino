@@ -19,11 +19,13 @@ LiquidCrystal lcd(13, 12, 11, 10, 9, 8, 7);
 ///////////////////////////////////
 Servo servo1;
 
-char version[] = "8-1 s1";
+char version[] = "8/2 #2";
 
 const char splash_Messsage[] = "Servo!!";
 
 const int SERVO_OUT_PIN    = 6;
+
+int deg=0;
 
 void setup() {
   
@@ -62,17 +64,22 @@ void loop() {
 // servo
 //
 ///////////////////////////////////
-  int deg=0;  // 初期の回転角
-  // 0-180度回転
-  for (deg=0; deg<180; deg++) {
+  deg=0;  // 初期の回転角
+//  int deg=0;  // 初期の回転角
+  
+//  // 0-180度回転
+//  for (deg=0; deg<180; deg++) {
+    
     servo1.write(deg);  // deg度まで回転
+    
     delay(20);          // 20ms待機
-  }
-  // 180-0度回転
-  for (deg=180; deg>0; deg--) {
-    servo1.write(deg);  // deg度まで回転
-    delay(20);          // 20ms待機
-  }
+    
+//  }
+//  // 180-0度回転
+//  for (deg=180; deg>0; deg--) {
+//    servo1.write(deg);  // deg度まで回転
+//    delay(20);          // 20ms待機
+//  }
   
 //  lcd.setCursor(0, 1);
 //  lcd.print(a_1 + " " + a_2 + " " + a_3);
@@ -115,5 +122,7 @@ int get_Max_Index(int values[], int len) {
   return tmp;
   
 }
+
+
 
 

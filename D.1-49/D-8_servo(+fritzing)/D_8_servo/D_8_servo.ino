@@ -4,12 +4,12 @@
   * 1. servo
   */
 
-#include <LiquidCrystal.h>
+//#include <LiquidCrystal.h>
 
 #include <Servo.h>
 
 
-LiquidCrystal lcd(13, 12, 11, 10, 9, 8, 7);
+//LiquidCrystal lcd(13, 12, 11, 10, 9, 8, 7);
 //LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2);
 
 ///////////////////////////////////
@@ -29,18 +29,18 @@ int deg=0;
 
 void setup() {
   
-  ///////////////////////////////////
-  //
-  // serial
-  //
-  ///////////////////////////////////
-  Serial.begin(9600);
-  
-  lcd.begin(16, 2);//16x2桁
-  lcd.clear();
+//  ///////////////////////////////////
+//  //
+//  // serial
+//  //
+//  ///////////////////////////////////
+//  Serial.begin(9600);
+//  
+//  lcd.begin(16, 2);//16x2桁
+//  lcd.clear();
 
   // splash
-  splash(splash_Messsage, 500, 3);
+//  splash(splash_Messsage, 500, 3);
 //  splash("Light Source!", 500, 3);
 
   ///////////////////////////////////
@@ -66,8 +66,8 @@ void setup() {
 void loop() {
 // digitalWrite(LCD_BL,HIGH);
 //  int anain_1 ;
-  lcd.setCursor(0, 0);
-  lcd.print(version);
+//  lcd.setCursor(0, 0);
+//  lcd.print(version);
   
   ///////////////////////////////////
 //
@@ -100,23 +100,23 @@ void loop() {
   
 }//void loop()
 
-void splash(String message, int dur, int iter) {
-
-  lcd.setCursor(0, 0);
-  
-  for(int i = 0; i < iter; i++) {
-    
-    lcd.print(message);
-
-    delay(dur);
-    
-    lcd.clear();
-
-    delay(dur);
-    
-  }
-  
-}
+//void splash(String message, int dur, int iter) {
+//
+//  lcd.setCursor(0, 0);
+//  
+//  for(int i = 0; i < iter; i++) {
+//    
+//    lcd.print(message);
+//
+//    delay(dur);
+//    
+//    lcd.clear();
+//
+//    delay(dur);
+//    
+//  }
+//  
+//}
 
 int get_Max_Index(int values[], int len) {
 //  int get_Max(values) {
@@ -136,6 +136,8 @@ int get_Max_Index(int values[], int len) {
   return tmp;
   
 }
+
+
 
 
 

@@ -18,13 +18,19 @@ LiquidCrystal lcd(13, 12, 11, 10, 9, 8, 7);
 ///////////////////////////////////
 //Servo servo1;
 
-char version[] = "8/3 #1-2";
+char version[] = "8/3 #2-2";
 
 const char splash_Messsage[] = "Pulsing...";
 
-const int SERVO_OUT_PIN    = 3;
+const int SERVO_OUT_PIN    = 2;
+//const int SERVO_OUT_PIN    = 3;
 
-//int deg=0;
+int deg=0;
+
+//REF http://marupeke296.com/EL_Ard_No9_ServoMotor.html
+const int deg0msec = 600; // msec.
+const int deg180msec = 2350; // msec.
+int microSec = deg0msec;
 
 void setup() {
   
@@ -42,8 +48,8 @@ void setup() {
   splash(splash_Messsage, 500, 3);
 //  splash("Light Source!", 500, 3);
 
-lcd.setCursor(0, 0);
-lcd.print(version);
+  lcd.setCursor(0, 0);
+  lcd.print(version);
 
   ///////////////////////////////////
   //
@@ -84,9 +90,45 @@ void loop() {
 // servo
 //
 ///////////////////////////////////
+  // degree: 0
+  deg = 0;
   
+//  microSec = deg0msec + deg / 180.0 * ( deg180msec - deg0msec );
+  
+  microSec = 1000;
+//  microSec = 700;
+//  microSec = 500;
+  
+  digitalWrite( SERVO_OUT_PIN, HIGH );
+    delayMicroseconds( microSec ); // ON
+    
+    digitalWrite( SERVO_OUT_PIN, LOW );
+    delayMicroseconds( 10000 ); // OFF
+    delayMicroseconds( 10000 - microSec ); // OFF
+  
+    // wait
+    delay(2000);
+    
+    // degree: 180
+    deg = 180;
+    
+//    microSec = deg0msec + deg / 180.0 * ( deg180msec - deg0msec );
+    microSec = 2000;
+//    microSec = 1400;
+//    microSec = 1000;
+    
+    digitalWrite( SERVO_OUT_PIN, HIGH );
+    delayMicroseconds( microSec ); // ON
+    
+    digitalWrite( SERVO_OUT_PIN, LOW );
+    delayMicroseconds( 10000 ); // OFF
+    delayMicroseconds( 10000 - microSec ); // OFF
+    
+ // wait
+    delay(2000);
+    
   //analogWrite( SERVO_OUT_PIN, 20 );
-  analogWrite( SERVO_OUT_PIN, 100 );
+//  analogWrite( SERVO_OUT_PIN, 100 );
   
 //  deg=0;  // 初期の回転角
 ////  int deg=0;  // 初期の回転角
@@ -150,5 +192,4 @@ int get_Max_Index(int values[], int len) {
   return tmp;
   
 }
-
 

@@ -5,10 +5,10 @@
 int RECV_PIN = 11;
  
 IRrecv irrecv(RECV_PIN);
- 
+
 decode_results results;
 
-const char title[] = "12/1 #1";
+const char title[] = "12/2 #2 n5";
 //const char[] title = "12/1 #1"
 
 ////test
@@ -122,6 +122,8 @@ void loop() {
     Serial.println(results.value, HEX);
     dump(&results);
     irrecv.resume(); // Receive the next value
+    
+    Serial.println("resuming...");
     
   }
   

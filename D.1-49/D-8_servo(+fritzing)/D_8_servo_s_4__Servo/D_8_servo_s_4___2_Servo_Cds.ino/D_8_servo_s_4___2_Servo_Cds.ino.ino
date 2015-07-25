@@ -13,12 +13,13 @@
 ///////////////////////////////////
 Servo servo1;
 
-char version[] = "8/4 #2-2 t1";
+char version[] = "8/4 #2-3";
+
+const char splash_Messsage[] = "Servo!!";
 
 const int SERVO_OUT_PIN    = 6;
 
 const int DELAY_TIME_MS    = 0;
-
 int deg=0;
 
 const int ANALOG_0 = 0;
@@ -72,48 +73,119 @@ void setup() {
   
   delay(100);
   
-//  ///////////////////////////////////
-////
-//// state
-////
-/////////////////////////////////////
-//  state = CENTER;
-//  
-//  // move servo
-//  move_Servo(state);
+  ///////////////////////////////////
+//
+// state
+//
+///////////////////////////////////
+  state = CENTER;
+  
+  // move servo
+  move_Servo(state);
   
 }//void setup()
 
 void loop() {
   
   ///////////////////////////////////
+  //
+  // read: analog
+  //
+  ///////////////////////////////////
+  val_0 = analogRead(ANALOG_0);
+  val_1 = analogRead(ANALOG_1);
+
+//  Serial.println(s0 + val_0);
+//  Serial.println(s1 + val_1);
+  
+  // difference
+  diff = abs(val_0 - val_1);
+  
+  //debug
+  String s("diff => ");
+  Serial.println(s + diff);
 //
-// servo
+////  // larger
+////  larger = larger_value(val_0, val_1);
+//  
+////  //debug
+////  String s2("larger => ");
+////  Serial.println(s2 + larger);
+//  
+  ///////////////////////////////////
+//
+// move: servo
 //
 ///////////////////////////////////
-  deg=0;  // 初期の回転角
-//  int deg=0;  // 初期の回転角
+  if (diff > THRESH) {
+    // larger
+    larger = larger_value(val_0, val_1);
+    
+    //debug
+    String s2("larger => ");
+    Serial.println(s2 + larger);
+    
+    
+    switch(larger) {
+    
+    case RIGHT:
+      
+      if (state != RIGHT) {
   
-  // 0-180度回転
-//  for (deg=0; deg<180; deg++) {
+        state = RIGHT;
+        
+        move_Servo(state);
+  
+      }//if (state != RIGHT)
+      
+      break;
+    
+    case LEFT:
+  
+      if (state != LEFT) {
+  
+        state = LEFT;
+        
+        move_Servo(state);
+  
+      }//if (state != RIGHT)
+      
+      break;
+  
+      break;
+      
+    }
+  
+  }//if (diff > THRESH)
 
-    deg = 180;
-    
-    servo1.write(deg);  // deg度まで回転
-    
-//    delay(DELAY_TIME_MS);          // 20ms待機
-//    delay(20);          // 20ms待機
-    
-//  }
   
-  // 180-0度回転
-  for (deg=180; deg>0; deg--) {
-    
-    servo1.write(deg);  // deg度まで回転
-    
-    delay(20);          // 20ms待機
-    
-  }
+  // wait
+  delay(500);
+
+  
+//  // judge: diff is larger than THRESH?
+//  if (diff > THRESH) {
+//  
+//    update_Servo(val_0, val_1);
+//  
+//  } else {
+//    
+//    if (state == CENTER) {
+//      
+//      
+//      
+//    } else {//if (state == CENTER)
+//      
+//      // update state
+//      state = CENTER;
+//      
+//      // move servo
+//      move_Servo(state);
+//      
+//    }//if (state == CENTER)
+//  
+//    
+//  }
   
 }//void loop()
 

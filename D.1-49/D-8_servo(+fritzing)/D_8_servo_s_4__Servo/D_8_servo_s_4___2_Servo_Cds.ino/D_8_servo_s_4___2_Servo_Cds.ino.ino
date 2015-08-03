@@ -40,11 +40,14 @@
   const int DEG_CENTER  = 90;
   const int DEG_RIGHT = 0;
   const int DEG_LEFT  = 180;
+
+  const int WITHIN_BALANCE  = 100;
   
   int diff;
   int larger;
   
-  const int THRESH    = 100;
+  const int THRESH    = 20;
+//  const int THRESH    = 100;
   
   void setup() {
     
@@ -95,8 +98,8 @@
     val_0 = analogRead(ANALOG_0);
     val_1 = analogRead(ANALOG_1);
   
-    Serial.println(s0 + val_0);
-    Serial.println(s1 + val_1);
+//    Serial.println(s0 + val_0);
+//    Serial.println(s1 + val_1);
     
     // difference
     diff = abs(val_0 - val_1);
@@ -118,6 +121,19 @@
   //
   ///////////////////////////////////
     if (diff > THRESH) {
+
+      if (diff < WITHIN_BALANCE) {
+      
+        if (state != CENTER) {
+
+          state = CENTER;
+          
+          move_Servo(state);
+
+      }//if (state != CENTER)
+      
+    } else {//if (diff < WITHIN_BALANCE)
+      
       // larger
       larger = larger_value(val_0, val_1);
       
@@ -131,61 +147,38 @@
       case RIGHT:
         
         if (state != RIGHT) {
-    
+          
           state = RIGHT;
           
           move_Servo(state);
-    
+          
         }//if (state != RIGHT)
         
         break;
-      
+        
       case LEFT:
-    
+        
         if (state != LEFT) {
-    
+          
           state = LEFT;
           
           move_Servo(state);
-    
+          
         }//if (state != RIGHT)
         
         break;
-    
+        
         break;
         
       }
+      
+    }//if (diff < WITHIN_BALANCE)
     
     }//if (diff > THRESH)
   
     
     // wait
     delay(500);
-  
-    
-  //  // judge: diff is larger than THRESH?
-  //  if (diff > THRESH) {
-  //  
-  //    update_Servo(val_0, val_1);
-  //  
-  //  } else {
-  //    
-  //    if (state == CENTER) {
-  //      
-  //      
-  //      
-  //    } else {//if (state == CENTER)
-  //      
-  //      // update state
-  //      state = CENTER;
-  //      
-  //      // move servo
-  //      move_Servo(state);
-  //      
-  //    }//if (state == CENTER)
-  //  
-  //    
-  //  }
     
   }//void loop()
   
@@ -242,4 +235,7 @@
   }
   
   
+
+
+
 

@@ -12,11 +12,22 @@
   // vars
   //
   ///////////////////////////////////
-  const char version[] = "13/1 #2";
+  const char version[] = "13/1 #3";
   
   unsigned long timenow; 
 
+  const int BUTTON_1 = 7;  // button --> pin 7
+  
+  int buttonState;
+  
   void setup() {
+    
+    ///////////////////////////////////
+  //
+  // pin modes
+  //
+  ///////////////////////////////////
+    pinMode(BUTTON_1, INPUT);
     
     ///////////////////////////////////
     //
@@ -31,9 +42,35 @@
     Timer1.pwm(9, 512);                // setup pwm on pin 9, 50% duty cycle
     Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
     
+    
+    
   }//void setup()
   
   void loop() {
+    
+    buttonState = digitalRead(BUTTON_1);  // read input
+    
+    if (buttonState == HIGH) {
+
+      Serial.println("Pushed!");
+
+      timenow = Timer1.read();
+      
+      Serial.println("time is => ");
+      Serial.println(timenow);
+
+//      Timer1.restart();
+      
+      TCNT1 = 0;  // reset the counter ?
+      
+      timenow = Timer1.read();
+      
+      Serial.println("TCNT1 = 0: time is => ");
+      Serial.println(timenow);
+      
+      delay(200);   // wait for 200 ms
+
+    }//if (buttonState)
     
 //    delay(200);
 //    
@@ -54,6 +91,11 @@
     Serial.println(timenow);
 
   }
+
+
+
+
+
 
 
 

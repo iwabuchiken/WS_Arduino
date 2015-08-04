@@ -12,7 +12,7 @@
   // vars
   //
   ///////////////////////////////////
-  const char version[] = "13/1 #4";
+  const char version[] = "13/1 #4-2";
   
   unsigned long timenow; 
 
@@ -72,11 +72,13 @@
 //      TCNT1 = 0;  // reset the counter ?
       
       // restart timer
-      Timer1.start();
+//      Timer1.start();
+      Timer1.initialize();
+      
       
       timenow = Timer1.read();
       
-      Serial.println("start(): time is => ");
+      Serial.println("initialize(): time is => ");
       Serial.println(timenow);
       
       delay(200);   // wait for 200 ms
@@ -102,6 +104,7 @@
     Serial.println(timenow);
 
   }
+
 
 
 

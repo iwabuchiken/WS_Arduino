@@ -12,7 +12,7 @@
   // vars
   //
   ///////////////////////////////////
-  const char version[] = "13/1 #3";
+  const char version[] = "13/1 #4";
   
   unsigned long timenow; 
 
@@ -38,7 +38,15 @@
   
     Serial.println(version);
     
+    //debug
+    Serial.println(millis());
+    
     Timer1.initialize(500000);         // initialize timer1, and set a 1/2 second period
+    
+  //debug
+    Serial.println(millis());
+    Serial.println("initialized");
+    
     Timer1.pwm(9, 512);                // setup pwm on pin 9, 50% duty cycle
     Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
     
@@ -61,11 +69,14 @@
 
 //      Timer1.restart();
       
-      TCNT1 = 0;  // reset the counter ?
+//      TCNT1 = 0;  // reset the counter ?
+      
+      // restart timer
+      Timer1.start();
       
       timenow = Timer1.read();
       
-      Serial.println("TCNT1 = 0: time is => ");
+      Serial.println("start(): time is => ");
       Serial.println(timenow);
       
       delay(200);   // wait for 200 ms
@@ -91,6 +102,8 @@
     Serial.println(timenow);
 
   }
+
+
 
 
 

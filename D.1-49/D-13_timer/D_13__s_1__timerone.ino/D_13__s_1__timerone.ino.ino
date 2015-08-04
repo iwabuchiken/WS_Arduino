@@ -1,3 +1,5 @@
+//#include <Prescaler.h>
+
   /*
     * D_13__s_1__timerone.ino\D_13__s_1__timerone.ino.ino
     *
@@ -7,18 +9,30 @@
 //REF http://playground.arduino.cc/Code/Timer1
 #include "TimerOne.h"
 
+#include <Prescaler.h>
+
   ///////////////////////////////////
   //
   // vars
   //
   ///////////////////////////////////
-  const char version[] = "13/1 #4-3";
+  const char version[] = "13/2 #1";
   
   unsigned long timenow; 
 
   const int BUTTON_1 = 7;  // button --> pin 7
   
   int buttonState;
+  
+  // counter for timer
+  int count = 0;
+  
+  ///////////////////////////////////
+//
+// strings
+//
+///////////////////////////////////
+  String s_count("count => ");
   
   void setup() {
     
@@ -50,7 +64,13 @@
     Timer1.pwm(9, 512);                // setup pwm on pin 9, 50% duty cycle
     Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
     
-    
+    ///////////////////////////////////
+	//
+	// prescaler
+	//
+	///////////////////////////////////
+    //REF http://arms22.blog91.fc2.com/blog-entry-309.html
+    Prescaler.set(clock_div_8);
     
   }//void setup()
   
@@ -105,17 +125,11 @@
     
     Serial.println("timenow => ");
     Serial.println(timenow);
+    
+    // count: increment
+    count ++;
+    
+    Serial.println(s_count + count);
 
   }
-
-
-
-
-
-
-
-
-
-
-
 

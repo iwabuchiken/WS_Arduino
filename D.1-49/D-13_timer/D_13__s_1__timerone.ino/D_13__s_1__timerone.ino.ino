@@ -22,7 +22,7 @@
   // vars
   //
   ///////////////////////////////////
-  const char version[] = "13/3 #1";
+  const char version[] = "13/4 #1";
   
   unsigned long timenow; 
 
@@ -204,7 +204,13 @@ void recvSignal(){
     //REF http://arms22.blog91.fc2.com/blog-entry-309.html
     //Prescaler.set(clock_div_8);
 //    Prescaler.set(clock_div_1);
-
+    ///////////////////////////////////
+  //
+  // prescale
+  //
+  ///////////////////////////////////
+    initCTC1(0);
+    
     ///////////////////////////////////
   //
   // timer
@@ -216,23 +222,23 @@ void recvSignal(){
     Serial.println(millis());
     Serial.println("initialized");
     
-    Timer1.pwm(9, 512);                // setup pwm on pin 9, 50% duty cycle
+//    Timer1.pwm(9, 512);                // setup pwm on pin 9, 50% duty cycle
     Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
     
     ///////////////////////////////////
-	//
-	// pins
-	//
-	///////////////////////////////////
-    pinMode(IR_IN, INPUT);
-    pinMode(IR_OUT, OUTPUT);
+  //
+  // pins
+  //
+  ///////////////////////////////////
+//    pinMode(IR_IN, INPUT);
+//    pinMode(IR_OUT, OUTPUT);
 
     ///////////////////////////////////
-	//
-	// send signal
-	//
-	///////////////////////////////////
-    sendSignal();
+  //
+  // send signal
+  //
+  ///////////////////////////////////
+//    sendSignal();
     
 //    ///////////////////////////////////
 //  //
@@ -246,37 +252,37 @@ void recvSignal(){
   
   void loop() {
     
-    buttonState = digitalRead(BUTTON_1);  // read input
-    
-    if (buttonState == HIGH) {
-
-      Serial.println("Pushed!");
-
-      timenow = Timer1.read();
-      
-      Serial.println("time is => ");
-      Serial.println(timenow);
-
-//      Timer1.restart();
-      
+//    buttonState = digitalRead(BUTTON_1);  // read input
+//    
+//    if (buttonState == HIGH) {
+//
+//      Serial.println("Pushed!");
+//
+//      timenow = Timer1.read();
+//      
+//      Serial.println("time is => ");
+//      Serial.println(timenow);
+//
+////      Timer1.restart();
+//      
+////      TCNT1 = 0;  // reset the counter ?
+//      
+//      // restart timer
+////      Timer1.start();
+//      
 //      TCNT1 = 0;  // reset the counter ?
-      
-      // restart timer
-//      Timer1.start();
-      
-      TCNT1 = 0;  // reset the counter ?
-      
-      Timer1.initialize();
-      
-      
-      timenow = Timer1.read();
-      
-      Serial.println("initialize(): time is => ");
-      Serial.println(timenow);
-      
-      delay(200);   // wait for 200 ms
-
-    }//if (buttonState)
+//      
+//      Timer1.initialize();
+//      
+//      
+//      timenow = Timer1.read();
+//      
+//      Serial.println("initialize(): time is => ");
+//      Serial.println(timenow);
+//      
+//      delay(200);   // wait for 200 ms
+//
+//    }//if (buttonState)
     
 //    delay(200);
 //    
@@ -302,5 +308,60 @@ void recvSignal(){
     Serial.println(s_count + count);
 
   }
+
+  //REF http://www.wsnak.com/wsnakblog/?p=4110
+  void initCTC1(int carry) {
+    
+      pinMode(9, OUTPUT);                 // これ必要
+   
+      if(carry) {
+          // ************ 38KHz ***************
+          // 16MHz * 1/1 = 16MHz
+          // T = 1 / 16MHz = 0.0625us
+          // 逆算 F = 1 / (0.0625 * 208 * 2) = 38.46kHz
+   
+          // OC1A(PB1/D9) toggle
+          TCCR1A &= ~(1<<COM1A1);     // 0
+          TCCR1A |=  (1<<COM1A0);     // 1
+   
+          // WGM13-10 = 0100 CTCモード
+          TCCR1B &= ~(1<<WGM13);      // 0
+          TCCR1B |=  (1<<WGM12);      // 1
+          TCCR1A &= ~(1<<WGM11);      // 0
+          TCCR1A &= ~(1<<WGM10);      // 0
+   
+          // ClockSource CS12-CS10 = 001 16MHz / 1 T= 0.0625us
+          TCCR1B &= ~(1<<CS12);       // 0
+          TCCR1B &= ~(1<<CS11);       // 0
+          TCCR1B |=  (1<<CS10);       // 1
+   
+          OCR1A = 207;                // コンペア値
+   
+      } else {
+          // ************ 5KHz ***************
+          // 16MHz * 1/64 = 0.25MHz T = 4us
+          // 250KHz / 5KHz = 50
+          // コンペア値 = 50 / 2 = 25
+          // 逆算 F = 1 / (4 * 25 * 2) = 5KHz
+   
+          // OC1A(PB1/D9) toggle
+          TCCR1A &= ~(1<<COM1A1);     // 0
+          TCCR1A |=  (1<<COM1A0);     // 1
+   
+          // WGM13-10 = 0100 CTCモード
+          TCCR1B &= ~(1<<WGM13);      // 0
+          TCCR1B |=  (1<<WGM12);      // 1
+          TCCR1A &= ~(1<<WGM11);      // 0
+          TCCR1A &= ~(1<<WGM10);      // 0
+   
+          // ClockSource CS12-CS10 = 011 16MHz / 64 T= 4us
+          TCCR1B &= ~(1<<CS12);       // 0
+          TCCR1B |=  (1<<CS11);       // 1
+          TCCR1B |=  (1<<CS10);       // 1
+   
+          OCR1A = 24;             // コンペア値
+      }
+  }
+
 
 

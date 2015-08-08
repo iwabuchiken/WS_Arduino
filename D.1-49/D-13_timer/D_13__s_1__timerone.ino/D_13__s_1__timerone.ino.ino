@@ -55,6 +55,20 @@
     //debug
     Serial.println(millis());
     
+    ///////////////////////////////////
+    //
+    // prescaler
+    //
+    ///////////////////////////////////
+    //REF http://arms22.blog91.fc2.com/blog-entry-309.html
+    //Prescaler.set(clock_div_8);
+    Prescaler.set(clock_div_1);
+
+    ///////////////////////////////////
+  //
+  // timer
+  //
+  ///////////////////////////////////
     Timer1.initialize(500000);         // initialize timer1, and set a 1/2 second period
     
   //debug
@@ -64,13 +78,13 @@
     Timer1.pwm(9, 512);                // setup pwm on pin 9, 50% duty cycle
     Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
     
-    ///////////////////////////////////
-	//
-	// prescaler
-	//
-	///////////////////////////////////
-    //REF http://arms22.blog91.fc2.com/blog-entry-309.html
-    Prescaler.set(clock_div_8);
+//    ///////////////////////////////////
+//  //
+//  // prescaler
+//  //
+//  ///////////////////////////////////
+//    //REF http://arms22.blog91.fc2.com/blog-entry-309.html
+//    Prescaler.set(clock_div_1);
     
   }//void setup()
   
@@ -132,4 +146,8 @@
     Serial.println(s_count + count);
 
   }
+
+
+
+
 

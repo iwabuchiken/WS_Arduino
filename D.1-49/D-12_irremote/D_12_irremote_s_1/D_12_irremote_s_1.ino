@@ -1,47 +1,65 @@
   /*
   * D_12_irremote_s_1.ino
   *
+  * [Notices]
+  * 	1. Monitor speed	=> 57600 bps
+  * 	2. Serial rate		=> 57600
   * 
   */
 
-const char title[] = "12/4 #1-2";
+///////////////////////////////////
+//
+// defines
+//
+///////////////////////////////////
+#define READ_PIN 7
+#define LOW_STATE 0
+#define HIGH_STATE 1
+
+const char title[] = "\n12/4 #2-1";
 
 ///////////////////////////////////
 //
 // vars
 //
 ///////////////////////////////////
-int last        = -1;
-unsigned long last_time = 0;
-
-int state_obtained = 0;
-
-int val;
-
-unsigned long now;
+unsigned long now = micros();
+unsigned long lastStateChangedMicros = micros();
+int state = HIGH_STATE;
 
 //////////////////////////////////////////////////////////////////////
 //
 // methods
 //
 //////////////////////////////////////////////////////////////////////
+void waitLow() {
+    while (digitalRead(READ_PIN)==LOW) {
+      ;
+    }
+  }
+   
+int waitHigh() {
+  unsigned long start = micros();
+  while (digitalRead(READ_PIN)==HIGH) {
+    if (micros() - start > 5000000) {
+      return 1;
+    }
+  }
+  return 0;
+}
+  
 void setup()
 {
-  Serial.begin(9600);
+//  Serial.begin(9600);
+  Serial.begin(57600);
 
   ///////////////////////////////////
   //
   // pins
   //
   ///////////////////////////////////
-  pinMode(7, INPUT);
-  
-  ///////////////////////////////////
-  //
-  // get: time
-  //
-  ///////////////////////////////////
-  last_time = micros();
+//  pinMode(7, INPUT);
+  pinMode(READ_PIN,INPUT);
   
   ///////////////////////////////////
   //
@@ -52,54 +70,32 @@ void setup()
   
 }
  
+
 void loop() {
 
-//  int val;
-  
-  while(1) {
-    
-    val = !digitalRead(7);
-
-//    // state
-//    if (state_obtained == 0) {
-//
-//      state_obtained = 1;
-//      
-//      Serial.print("val = ");
-//      Serial.println(val);
-
-//  }//if (state_obtained == 0)
-    
-    if(val != last) break;
-//    if(val != last) {
-//      
-//      state_obtained = 0;
-//      
-//      break;
-//    }
-    
-  }//while(1)
-  
+  if (state == LOW_STATE) {
+    waitLow();
+  } else {
+    int ret = waitHigh();
+    if (ret == 1) {
+      Serial.print("\n");
+      return;
+    }
+  }
+   
   now = micros();
-//  unsigned long now = micros();
-  
-  Serial.print("last = ");
-  Serial.print(last);
-//  Serial.print("last_time = ");
-//  Serial.print(last_time);
-  Serial.print(", dur = ");
-  Serial.println(now - last_time);
-  
-  ///////////////////////////////////
-  //
-  // update
-  //
-  ///////////////////////////////////
-  last = val;
-  
-  last_time = now;
+  Serial.print((now - lastStateChangedMicros) / 10, DEC);
+  Serial.print(",");
+  lastStateChangedMicros = now;
+  if (state == HIGH_STATE) {
+    state = LOW_STATE;
+  } else {
+    state = HIGH_STATE;
+  }
   
 }//void loop()
+
+
 
 
 

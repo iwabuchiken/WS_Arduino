@@ -16,7 +16,7 @@
 // vars
 //
 ///////////////////////////////////
-const char version[] = "13/5 #3-2";
+const char version[] = "13/5 #3-3";
 
 // pin states
 int state_PIN_7    = 0;
@@ -139,15 +139,17 @@ void loop() {
 //    Timer1.disablePwm(PIN_PWM);
 //    
     Serial.println("disabled");
-    
-    digitalWrite(PIN_PWM, HIGH);
-    
-    delayMicroseconds(100);
-//    delayMicroseconds(9);
-    
-    digitalWrite(PIN_PWM, LOW);
 
-    delayMicroseconds(1000 - 100);
+    analogWrite(PIN_PWM, 50);
+    
+//    digitalWrite(PIN_PWM, HIGH);
+//    
+//    delayMicroseconds(100);
+////    delayMicroseconds(9);
+//    
+//    digitalWrite(PIN_PWM, LOW);
+//
+//    delayMicroseconds(1000 - 100);
 //    delayMicroseconds(17);
     
   }
@@ -237,6 +239,7 @@ void callback() {
   count ++;
   
 }
+
 
 
 

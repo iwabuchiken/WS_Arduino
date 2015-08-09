@@ -16,7 +16,7 @@
 // vars
 //
 ///////////////////////////////////
-const char version[] = "13/5 #3-1";
+const char version[] = "13/5 #3-2";
 
 // pin states
 int state_PIN_7    = 0;
@@ -117,7 +117,7 @@ void setup() {
 //    Timer1.attachInterrupt(callback); // attaches callback() as a timer overflow interrupt
   
   //REF http://playground.arduino.cc/Code/Timer1 [attachInterrupt(function, period)]
-    Timer1.attachInterrupt(callback, 100000); // every 100 millis
+//    Timer1.attachInterrupt(callback, 100000); // every 100 millis
 //  Timer1.attachInterrupt(callback, 500000); // every 100 millis
   
     //test
@@ -142,11 +142,13 @@ void loop() {
     
     digitalWrite(PIN_PWM, HIGH);
     
-    delayMicroseconds(9);
+    delayMicroseconds(100);
+//    delayMicroseconds(9);
     
     digitalWrite(PIN_PWM, LOW);
-    
-    delayMicroseconds(17);
+
+    delayMicroseconds(1000 - 100);
+//    delayMicroseconds(17);
     
   }
   
@@ -235,6 +237,7 @@ void callback() {
   count ++;
   
 }
+
 
 
 

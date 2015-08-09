@@ -16,7 +16,7 @@
   // vars
   //
   ///////////////////////////////////
-  const char version[] = "13/4 #3";
+  const char version[] = "13/5 #1";
   
   unsigned long timenow; 
 
@@ -27,6 +27,11 @@
   
   // counter for timer
   int count = 0;
+
+  // gauge the time
+  unsigned long time_Cur;
+  
+  unsigned long time_Prev;
   
   ///////////////////////////////////
 //
@@ -34,6 +39,7 @@
 //
 ///////////////////////////////////
   String s_count("count => ");
+  String s_ellapse("ellapse => ");
   
   // output pin
   const int PIN_OUT = 8;
@@ -66,7 +72,8 @@
   //
   ///////////////////////////////////
 //    Timer1.initialize(5000000);         // initialize timer1, and set a 1/2 second period
-    Timer1.initialize(500000);         // initialize timer1, and set a 1/2 second period
+    Timer1.initialize(10000);         // 10 millis
+//    Timer1.initialize(100000);         // 
     
   //debug
     Serial.println(millis());
@@ -77,6 +84,13 @@
 //    Timer1.pwm(9, 512, 100);                // setup pwm on pin 9, 50% duty cycle
 //    Timer1.pwm(9, 512);                // setup pwm on pin 9, 50% duty cycle
     Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
+    
+    ///////////////////////////////////
+  //
+  // gauge time
+  //
+  ///////////////////////////////////
+    time_Cur = micros();
     
   }//void setup()
   
@@ -124,7 +138,16 @@
         
     }
     
-    
+    ///////////////////////////////////
+  //
+  // gauge time
+  //
+  ///////////////////////////////////
+  time_Prev = time_Cur;
+  
+  time_Cur = micros();
+  
+  Serial.println(s_ellapse + (time_Cur - time_Prev));
     
     
 //    digitalWrite(10, digitalRead(10) ^ 1);
@@ -137,8 +160,13 @@
     // count: increment
     count ++;
     
-    Serial.println(s_count + count);
+//    Serial.println(s_count + count);
 
   }
+
+
+
+
+
 
 

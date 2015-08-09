@@ -1,29 +1,47 @@
-#include <IRremote.h>
-#include <IRremoteInt.h>
+  /*
+  * D_12_irremote_s_1.ino
+  *
+  * 
+  */
 
+const char title[] = "12/4 #1-2";
 
-int RECV_PIN = 11;
- 
-IRrecv irrecv(RECV_PIN);
+///////////////////////////////////
+//
+// vars
+//
+///////////////////////////////////
+int last        = -1;
+unsigned long last_time = 0;
 
-decode_results results;
+int state_obtained = 0;
 
-const char title[] = "12/2 #2 n5";
-//const char[] title = "12/1 #1"
+int val;
 
-////test
-//enum decode_type_t {
-//  
-//  LG = 12,
-//  WHYNTER = 13,    
-//  AIWA_RC_T501 = 14
-//  
-//};
+unsigned long now;
 
+//////////////////////////////////////////////////////////////////////
+//
+// methods
+//
+//////////////////////////////////////////////////////////////////////
 void setup()
 {
   Serial.begin(9600);
-  irrecv.enableIRIn(); // Start the receiver
+
+  ///////////////////////////////////
+  //
+  // pins
+  //
+  ///////////////////////////////////
+  pinMode(7, INPUT);
+  
+  ///////////////////////////////////
+  //
+  // get: time
+  //
+  ///////////////////////////////////
+  last_time = micros();
   
   ///////////////////////////////////
   //
@@ -34,100 +52,59 @@ void setup()
   
 }
  
-// Dumps out the decode_results structure.
-// Call this after IRrecv::decode()
-// void * to work around compiler issue
-//void dump(void *v) {
-// decode_results *results = (decode_results *)v
-void dump(decode_results *results) {
-  
-  int count = results->rawlen;
-  
-  if (results->decode_type == UNKNOWN) {
-    Serial.print("Unknown encoding: ");
-  }
-  else if (results->decode_type == NEC) {
-    Serial.print("Decoded NEC: ");
-  }
-  else if (results->decode_type == SONY) {
-    Serial.print("Decoded SONY: ");
-  }
-  else if (results->decode_type == RC5) {
-    Serial.print("Decoded RC5: ");
-  }
-  else if (results->decode_type == RC6) {
-    Serial.print("Decoded RC6: ");
-  }
-  else if (results->decode_type == PANASONIC) { 
-    
-    Serial.print("Decoded PANASONIC - Address: ");
-    Serial.print(results->panasonicAddress,HEX);
-    Serial.print(" Value: ");
-    
-  }
-  else if (results->decode_type == LG) {
-    
-    Serial.print("Decoded LG: ");
-    
-  }
-  else if (results->decode_type == JVC) {
-    
-    Serial.print("Decoded JVC: ");
-   
-  }
-  else if (results->decode_type == AIWA_RC_T501) {
-    
-    Serial.print("Decoded AIWA RC T501: ");
-    
-  }
-  else if (results->decode_type == WHYNTER) {
-    
-    Serial.print("Decoded Whynter: ");
-    
-  }
-  
-  Serial.print(results->value, HEX);
-  Serial.print(" (");
-  Serial.print(results->bits, DEC);
-  Serial.println(" bits)");
-  Serial.print("Raw (");
-  Serial.print(count, DEC);
-  Serial.print("): ");
-   
-  for (int i = 0; i < count; i++) {
-    
-    if ((i % 2) == 1) {
-      
-      Serial.print(results->rawbuf[i]*USECPERTICK, DEC);
-      
-    }
-    else {
-      
-      Serial.print(-(int)results->rawbuf[i]*USECPERTICK, DEC);
-      
-    }
-    
-    Serial.print(" ");
-    
-  }//for (int i = 0; i < count; i++)
-  
-  Serial.println("");
-  
-}//void dump(decode_results *results)
- 
 void loop() {
+
+//  int val;
   
-  if (irrecv.decode(&results)) {
+  while(1) {
     
-    Serial.println(results.value, HEX);
-    dump(&results);
-    irrecv.resume(); // Receive the next value
+    val = !digitalRead(7);
+
+//    // state
+//    if (state_obtained == 0) {
+//
+//      state_obtained = 1;
+//      
+//      Serial.print("val = ");
+//      Serial.println(val);
+
+//  }//if (state_obtained == 0)
     
-    Serial.println("resuming...");
+    if(val != last) break;
+//    if(val != last) {
+//      
+//      state_obtained = 0;
+//      
+//      break;
+//    }
     
-  }
+  }//while(1)
+  
+  now = micros();
+//  unsigned long now = micros();
+  
+  Serial.print("last = ");
+  Serial.print(last);
+//  Serial.print("last_time = ");
+//  Serial.print(last_time);
+  Serial.print(", dur = ");
+  Serial.println(now - last_time);
+  
+  ///////////////////////////////////
+  //
+  // update
+  //
+  ///////////////////////////////////
+  last = val;
+  
+  last_time = now;
   
 }//void loop()
+
+
+
+
+
 
 
 

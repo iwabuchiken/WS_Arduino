@@ -16,7 +16,7 @@
   // vars
   //
   ///////////////////////////////////
-  const char version[] = "13/5 #1";
+  const char version[] = "13/5 #2-2";
   
   unsigned long timenow; 
 
@@ -72,7 +72,8 @@
   //
   ///////////////////////////////////
 //    Timer1.initialize(5000000);         // initialize timer1, and set a 1/2 second period
-    Timer1.initialize(10000);         // 10 millis
+    Timer1.initialize(100000);         // 100 millis
+//    Timer1.initialize(10000);         // 10 millis
 //    Timer1.initialize(100000);         // 
     
   //debug
@@ -83,7 +84,11 @@
 //    Timer1.pwm(9, 512, 26);                // setup pwm on pin 9, 50% duty cycle
 //    Timer1.pwm(9, 512, 100);                // setup pwm on pin 9, 50% duty cycle
 //    Timer1.pwm(9, 512);                // setup pwm on pin 9, 50% duty cycle
-    Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
+//    Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
+    
+    //REF http://playground.arduino.cc/Code/Timer1 [attachInterrupt(function, period)]
+//    Timer1.attachInterrupt(callback, 100000);  // every 100 millis
+    Timer1.attachInterrupt(callback, 500000);  // every 100 millis
     
     ///////////////////////////////////
   //
@@ -163,6 +168,8 @@
 //    Serial.println(s_count + count);
 
   }
+
+
 
 
 

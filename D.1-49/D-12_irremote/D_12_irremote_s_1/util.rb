@@ -265,5 +265,95 @@ def execute_2
     
 end
 
-execute_2
+def execute_3
+
+#  a_battery = "2433925,52,36,50,36,50,36,50,36,50,36,50,2524,356,163,51,122,50,36,50,36,50,36,50,122,50,36,52,34,50,36,50,36,234,416,440,469,338,440,396,469,357,421,410,416,436,396,415,437,394,3223,354,164,50,122,50,36,50,36,50,36,226,466,333,533,298,416,461,381,404,416,442,390,415,441,399,407,415,3173,354,163,50,122,50,36,50,36,50,36,242,450,381,484,397,468,312,416,446,386,415,446,398,404,459,382,404,460,396,391,415,439,397,411,456,379,411,416,436,396,414,435,396,416,450,381,415"
+  
+  #########################
+  # battery: 1
+  #########################
+  puts "************* battery: 1 *************"
+  
+  a_battery_1 = "164456,918,439,62,164,65,162,65,51,65,162,65,51,65,51,65,162,68,48,65,51,65,50,68,48,68,159,65,51,65,50,65,51,65,161,68,159,64,51,65,162,65,162,68,159,65,161,65,50,65,50,68,48,68,158,65,51,65,50,65,50,66,50,65,162,65,162,65,4141,918,217,62"
+  b_battery_1 = a_battery_1.split(",")
+  
+  print "b_battery => ", b_battery_1.length
+  print "\n"
+
+  puts
+  
+  #########################
+  # battery: 2
+  #########################
+  puts "************* battery: 2 *************"
+  
+  a_battery_2 = "69912,912,442,62,164,65,161,65,51,65,162,65,51,65,50,65,161,66,50,65,51,65,50,65,51,65,161,68,48,66,50,67,48,65,162,68,159,65,50,68,159,67,159,65,162,68,160,65,50,68,48,68,48,68,159,68,48,66,51,67,48,68,48,68,159,68,159,68,4138,917,217,62"
+  b_battery_2 = a_battery_2.split(",")
+  
+  print "b_battery => ", b_battery_2.length
+  print "\n"
+
+  puts
+  
+end#def execute_3
+
+def execute_s5_1
+
+  #########################
+  # battery: 1
+  #########################
+  puts "************* battery: 1 *************"
+  
+  a_battery_1 = "393972 HIGH,916 LOW,439 HIGH,65 LOW,161 HIGH,68 LOW,159 HIGH,68 LOW,48 HIGH,68 LOW,159 HIGH,68 LOW,48 HIGH,68 LOW,48 HIGH,68 LOW,160 HIGH,67 LOW,48 HIGH,68 LOW,48 HIGH,68 LOW,48 HIGH,77 LOW,266 HIGH,67 LOW,57 HIGH,173 LOW,98 HIGH,135 LOW,271 HIGH,65 LOW,71 HIGH,135 LOW,136 HIGH,152 LOW,237 HIGH,65 LOW,162 HIGH,96 LOW,136 HIGH,185 LOW,158 HIGH,80 LOW,152 HIGH,184 LOW,72 HIGH,135 LOW,295 HIGH,67 LOW,4139 HIGH,917 LOW,217 HIGH,65 LOW,9642 HIGH,914 LOW,219 HIGH,66 LOW"
+  b_battery_1 = a_battery_1.split(",")
+  
+  print "b_battery => ", b_battery_1.length
+  print "\n"
+
+  puts
+  
+  #########################
+  # battery: 2
+  #########################
+  puts "************* battery: 2 *************"
+  
+  a_battery_2 = "707003 HIGH,916 LOW,439 HIGH,62 LOW,164 HIGH,68 LOW,159 HIGH,65 LOW,50 HIGH,68 LOW,159 HIGH,68 LOW,47 HIGH,68 LOW,48 HIGH,68 LOW,159 HIGH,65 LOW,50 HIGH,65 LOW,50 HIGH,66 LOW,50 HIGH,77 LOW,267 HIGH,68 LOW,56 HIGH,173 LOW,98 HIGH,135 LOW,272 HIGH,66 LOW,69 HIGH,136 LOW,136 HIGH,152 LOW,237 HIGH,68 LOW,159 HIGH,95 LOW,136 HIGH,185 LOW,158 HIGH,80 LOW,152 HIGH,184 LOW,71 HIGH,135 LOW,297 HIGH,67 LOW,4140 HIGH,916 LOW,217 HIGH,63 LOW,"
+  b_battery_2 = a_battery_2.split(",")
+  
+  print "b_battery => ", b_battery_2.length
+  print "\n"
+
+  puts
+  
+  #########################
+  # battery: 3
+  #########################
+  puts "************* battery_3 *************"
+  
+  a_battery_3 = "11522618 HIGH,914 LOW,441 HIGH,62 LOW,164 HIGH,65 LOW,161 HIGH,66 LOW,50 HIGH,66 LOW,161 HIGH,65 LOW,51 HIGH,65 LOW,51 HIGH,65 LOW,162 HIGH,64 LOW,50 HIGH,65 LOW,50 HIGH,65 LOW,50 HIGH,77 LOW,266 HIGH,65 LOW,59 HIGH,173 LOW,98 HIGH,135 LOW,271 HIGH,66 LOW,71 HIGH,135 LOW,136 HIGH,152 LOW,237 HIGH,66 LOW,161 HIGH,96 LOW,136 HIGH,182 LOW,162 HIGH,80 LOW,152 HIGH,181 LOW,74 HIGH,135 LOW,295 HIGH,65 LOW,4141 HIGH,916 LOW,217 HIGH,66 LOW"
+  b_battery_3 = a_battery_3.split(",")
+  
+  print "b_battery => ", b_battery_3.length
+  print "\n"
+
+  puts
+  
+  #########################
+  # battery: 4
+  #########################
+  puts "************* battery_4 *************"
+  
+  a_battery_4 = "372873,912,442,62,164,65,162,65,51,65,162,65,50,66,50,66,162,65,51,64,50,65,51,65,50,65,161,65,51,65,51,65,50,65,161,66,161,65,50,66,162,65,162,65,162,65,161,65,50,65,51,65,50,66,162,65,51,65,51,65,51,65,50,65,162,65,162,65,4142,914,220,62"
+  b_battery_4 = a_battery_4.split(",")
+  
+  print "b_battery => ", b_battery_4.length
+  print "\n"
+
+  puts
+  
+end#def execute_3
+
+execute_s5_1
+#execute_3
+#execute_2
 #execute

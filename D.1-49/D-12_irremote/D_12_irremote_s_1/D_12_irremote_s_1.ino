@@ -2,8 +2,8 @@
   * D_12_irremote_s_1.ino
   *
   * [Notices]
-  * 	1. Monitor speed	=> 57600 bps
-  * 	2. Serial rate		=> 57600
+  *   1. Monitor speed  => 57600 bps
+  *   2. Serial rate    => 57600
   * 
   */
 
@@ -16,7 +16,7 @@
 #define LOW_STATE 0
 #define HIGH_STATE 1
 
-const char title[] = "\n12/4 #2-1";
+const char title[] = "\n12/5 #1";
 
 ///////////////////////////////////
 //
@@ -84,8 +84,27 @@ void loop() {
   }
    
   now = micros();
+  
   Serial.print((now - lastStateChangedMicros) / 10, DEC);
+  
+  ///////////////////////////////////
+  //
+  // show high or low
+  //
+  ///////////////////////////////////
+//  if (state == HIGH_STATE) {
+//    
+//    Serial.print(" HIGH");
+//    
+//  } else {
+//    
+//    Serial.print(" LOW");
+//    
+//  }
+
+  
   Serial.print(",");
+  
   lastStateChangedMicros = now;
   if (state == HIGH_STATE) {
     state = LOW_STATE;
@@ -94,6 +113,8 @@ void loop() {
   }
   
 }//void loop()
+
+
 
 
 

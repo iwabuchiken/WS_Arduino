@@ -10,200 +10,61 @@
   * 
   */
 
-///////////////////////////////////
-//
-// defines
-//
-///////////////////////////////////
-#define READ_PIN 7
-#define LOW_STATE 0
-#define HIGH_STATE 1
+#define IRpin       2    // 赤外線受信モジュール接続ピン番号
 
-const char title[] = "\n12/6 #2";
+const char splash[] = "12/6 #3";
 
-int count = 0;
-
-///////////////////////////////////
-//
-// vars
-//
-///////////////////////////////////
-unsigned long now = micros();
-unsigned long lastStateChangedMicros = micros();
-int state = HIGH_STATE;
-
-//const int SERIAL_RATE  = 115200;
-const int SERIAL_RATE  = 57600;
-
-///////////////////////////////////
-//
-// pins
-//
-///////////////////////////////////
-const int  LED_OUT = 8;
-int     MODE  = 0;
-const int   CHATTERING_TIME = 500;
-
-unsigned long  prev;
-unsigned long cur;
-
-//////////////////////////////////////////////////////////////////////
-//
-// methods
-//
-//////////////////////////////////////////////////////////////////////
-//the Interrupt routine  (2)
-void interruptsw() {
-  
-  prev = micros();
-  cur = prev;
-  
-  while(digitalRead(2) == 0) {
-    
-  }
-  
-  cur = micros();
-  
-  Serial.println("L is");
-  Serial.println(cur - prev);
-  
-//  ///////////////////////////////////
-//  //
-//  // chattering
-//  //
-//  ///////////////////////////////////
-//  delay(CHATTERING_TIME); // wait for 100 ms
-////  delay(200); // wait for 100 ms
-////  delay(100); // wait for 100 ms
-//  
-//  if (digitalRead(2) == 1) {
-//
-//    Serial.println("clicked!");
-//
-//  } else {//if (digitalRead(2) == 1)
-//    
-//    return;
-//    
-//  }//if (digitalRead(2) == 1)
-  
-//  ///////////////////////////////////
-//  //
-//  // count
-//  //
-//  ///////////////////////////////////
-//  count += 1;
-//  
-//  Serial.println(count);
-  
-  if(MODE){
-   MODE = 0;
-  }else{
-   MODE = 1;
-  }
-  
-}
-
-void waitLow() {
-    while (digitalRead(READ_PIN)==LOW) {
-      ;
-    }
-  }
-   
-int waitHigh() {
-  unsigned long start = micros();
-  while (digitalRead(READ_PIN)==HIGH) {
-    if (micros() - start > 5000000) {
-      return 1;
-    }
-  }
-  return 0;
-}
-  
+// 初期化処理
 void setup()
 {
-//  Serial.begin(9600);
-//  Serial.begin(57600);
-  Serial.begin(115200);
-//  Serial.begin(SERIAL_RATE);
-
-  ///////////////////////////////////
-  //
-  // pins
-  //
-  ///////////////////////////////////
-//  pinMode(7, INPUT);
-//  pinMode(READ_PIN,INPUT);
-  
-  pinMode(LED_OUT, OUTPUT);       
-  attachInterrupt(0, interruptsw, FALLING );  // (1) => pin 2
-//  attachInterrupt(0, interruptsw, RISING );  // (1) => pin 2
-  
-  ///////////////////////////////////
-  //
-  // splash
-  //
-  ///////////////////////////////////
-  Serial.println(title);
-  
+     Serial.begin(9600) ; // パソコン(ArduinoIDE)とシリアル通信の準備を行う
+     pinMode(IRpin,INPUT) ; // 赤外線受信モジュールに接続ピンをデジタル入力に設定
+     
+     Serial.println(splash);
+     
 }
- 
+// メインの処理
+void loop()
+{
+     unsigned long t ;
+     int i , cnt ;
+     char IRbit[64] ;
 
-void loop() {
-
-  if(MODE){
-    digitalWrite(LED_OUT, LOW);
-    delay(100);               
-    
-        digitalWrite(LED_OUT, HIGH);   // turn the LED on (HIGH is the voltage level)
-        delay(1000);               // wait for a second
-        digitalWrite(LED_OUT, LOW);    // turn the LED off by making the voltage LOW
-        delay(1000);               // wait for a second
-    }else{
-      digitalWrite(LED_OUT, HIGH); 
-    }
-  
-//  if (state == LOW_STATE) {
-//    waitLow();
-//  } else {
-//    int ret = waitHigh();
-//    if (ret == 1) {
-//      Serial.print("\n");
-//      return;
-//    }
-//  }
-//   
-//  now = micros();
-//  
-//  Serial.print((now - lastStateChangedMicros) / 10, DEC);
-//  
-//  ///////////////////////////////////
-//  //
-//  // show high or low
-//  //
-//  ///////////////////////////////////
-////  if (state == HIGH_STATE) {
-////    
-////    Serial.print(" HIGH");
-////    
-////  } else {
-////    
-////    Serial.print(" LOW");
-////    
-////  }
-//
-//  
-//  Serial.print(",");
-//  
-//  lastStateChangedMicros = now;
-//  if (state == HIGH_STATE) {
-//    state = LOW_STATE;
-//  } else {
-//    state = HIGH_STATE;
-//  }
-  
-}//void loop()
-
-
-
-
+     t = 0 ;
+     if (digitalRead(IRpin) == LOW) {
+          // リーダ部のチェックを行う
+          t = micros() ;                          // 現在の時刻(us)を得る
+          while (digitalRead(IRpin) == LOW) ; // HIGH(ON)になるまで待つ
+          t = micros() - t ;          // LOW(OFF)の部分をはかる
+     }
+     // リーダ部有りなら処理する(3.4ms以上のLOWにて判断する)
+     if (t >= 3400) {
+          i = 0 ;
+          while(digitalRead(IRpin) == HIGH) ; // ここまでがリーダ部(ON部分)読み飛ばす
+          // データ部の読み込み
+          while (1) {
+               while(digitalRead(IRpin) == LOW) ; // OFF部分は読み飛ばす
+               t = micros() ;
+               cnt = 0 ;
+               while(digitalRead(IRpin) == HIGH) {// LOW(OFF)になるまで待つ
+                    delayMicroseconds(10) ;
+                    cnt++ ;
+                    if (cnt >= 1200) break ;    // 12ms以上HIGHのままなら中断
+               }
+               t = micros() - t ;
+               if (t >= 10000) break ;      // ストップデータ
+               if (t >= 1000)  IRbit[i] = (char)0x31 ;  // ON部分が長い
+               else            IRbit[i] = (char)0x30 ;  // ON部分が短い
+               i++ ;
+          }
+          // データ有りなら表示を行う
+          if (i != 0) {
+               IRbit[i] = 0 ;
+//               DspData(i,IRbit) ;
+               
+               Serial.println("has data");
+               
+          }
+     }
+}
 

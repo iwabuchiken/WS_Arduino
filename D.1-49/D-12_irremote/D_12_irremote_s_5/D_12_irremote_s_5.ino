@@ -19,7 +19,9 @@
 #define LOW_STATE 0
 #define HIGH_STATE 1
 
-const char title[] = "\n12/5 #2-1";
+const char title[] = "\n12/6 #2";
+
+int count = 0;
 
 ///////////////////////////////////
 //
@@ -30,6 +32,9 @@ unsigned long now = micros();
 unsigned long lastStateChangedMicros = micros();
 int state = HIGH_STATE;
 
+//const int SERIAL_RATE  = 115200;
+const int SERIAL_RATE  = 57600;
+
 ///////////////////////////////////
 //
 // pins
@@ -37,7 +42,10 @@ int state = HIGH_STATE;
 ///////////////////////////////////
 const int  LED_OUT = 8;
 int     MODE  = 0;
-const int   CHATTERING_TIME = 400;
+const int   CHATTERING_TIME = 500;
+
+unsigned long  prev;
+unsigned long cur;
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -47,24 +55,45 @@ const int   CHATTERING_TIME = 400;
 //the Interrupt routine  (2)
 void interruptsw() {
   
-  ///////////////////////////////////
-  //
-  // chattering
-  //
-  ///////////////////////////////////
-  delay(CHATTERING_TIME); // wait for 100 ms
-//  delay(200); // wait for 100 ms
-//  delay(100); // wait for 100 ms
+  prev = micros();
+  cur = prev;
   
-  if (digitalRead(2) == 1) {
-
-    Serial.println("clicked!");
-
-  } else {//if (digitalRead(2) == 1)
+  while(digitalRead(2) == 0) {
     
-    return;
-    
-  }//if (digitalRead(2) == 1)
+  }
+  
+  cur = micros();
+  
+  Serial.println("L is");
+  Serial.println(cur - prev);
+  
+//  ///////////////////////////////////
+//  //
+//  // chattering
+//  //
+//  ///////////////////////////////////
+//  delay(CHATTERING_TIME); // wait for 100 ms
+////  delay(200); // wait for 100 ms
+////  delay(100); // wait for 100 ms
+//  
+//  if (digitalRead(2) == 1) {
+//
+//    Serial.println("clicked!");
+//
+//  } else {//if (digitalRead(2) == 1)
+//    
+//    return;
+//    
+//  }//if (digitalRead(2) == 1)
+  
+//  ///////////////////////////////////
+//  //
+//  // count
+//  //
+//  ///////////////////////////////////
+//  count += 1;
+//  
+//  Serial.println(count);
   
   if(MODE){
    MODE = 0;
@@ -93,7 +122,9 @@ int waitHigh() {
 void setup()
 {
 //  Serial.begin(9600);
-  Serial.begin(57600);
+//  Serial.begin(57600);
+  Serial.begin(115200);
+//  Serial.begin(SERIAL_RATE);
 
   ///////////////////////////////////
   //
@@ -104,7 +135,8 @@ void setup()
 //  pinMode(READ_PIN,INPUT);
   
   pinMode(LED_OUT, OUTPUT);       
-  attachInterrupt(0, interruptsw, RISING );  // (1) => pin 2
+  attachInterrupt(0, interruptsw, FALLING );  // (1) => pin 2
+//  attachInterrupt(0, interruptsw, RISING );  // (1) => pin 2
   
   ///////////////////////////////////
   //
@@ -170,9 +202,6 @@ void loop() {
 //  }
   
 }//void loop()
-
-
-
 
 
 

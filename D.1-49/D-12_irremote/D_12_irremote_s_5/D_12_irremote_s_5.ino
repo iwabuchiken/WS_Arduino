@@ -12,7 +12,7 @@
 
 #define IRpin       2    // 赤外線受信モジュール接続ピン番号
 
-const char splash[] = "12/6 #3";
+const char splash[] = "12/6 #3-2";
 
 // 初期化処理
 void setup()
@@ -60,11 +60,30 @@ void loop()
           // データ有りなら表示を行う
           if (i != 0) {
                IRbit[i] = 0 ;
-//               DspData(i,IRbit) ;
+               DspData(i,IRbit) ;
                
-               Serial.println("has data");
+//               Serial.println("has data");
                
           }
      }
 }
 
+//受信データをシリアルモニタ画面に送り表示をさせる処理
+void DspData(int num,char *data)
+{
+  int i , j , x , dt ;
+  
+   Serial.print(data) ;    // ビットデータで表示
+   Serial.write(" ( ") ;
+   x = num / 8 ;
+   // ビット文字列データから数値に変換する
+   for (j=0 ; j < x ; j++) {
+        dt = 0 ;
+        for (i=0 ; i < 8 ; i++) {
+             if (*data++ == 0x31) bitSet(dt,i) ;
+        }
+        Serial.print(dt,HEX) ;  // ＨＥＸ(16進数)で表示
+        Serial.write(' ') ;
+   }
+   Serial.println(')') ;     
+}

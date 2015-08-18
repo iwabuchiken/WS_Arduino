@@ -15,7 +15,7 @@
 // defines
 //
 ///////////////////////////////////
-const char title[] = "\n12/7 #1";
+const char title[] = "\n12/7 #2";
 
 int count = 0;
 
@@ -39,43 +39,109 @@ const int DATA_POINT  = 3;
 //
 ///////////////////////////////////
 const int  LED_OUT = 8;
+const int  LED_2 = 7;
+const int  LED_1 = 6;
 
 //////////////////////////////////////////////////////////////////////
 //
 // methods
 //
 //////////////////////////////////////////////////////////////////////
-//the Interrupt routine  (2)
-void interruptsw() {
+void setup()
+{
+  
+  Serial.begin(SERIAL_RATE);
 
-//  Serial.println("interrupt!");
-//  Serial.println(micros());
-//  
-//  delayMicroseconds(500);
-//  Serial.println("delayed 500");
+  ///////////////////////////////////
+  //
+  // pins
+  //
+  ///////////////////////////////////
+  pinMode(LED_OUT, OUTPUT);       
+  pinMode(LED_2, OUTPUT);       
+  pinMode(LED_1, OUTPUT);       
   
-  // stop interrupts
-  cli();
+  ///////////////////////////////////
+  //
+  // splash
+  //
+  ///////////////////////////////////
+  Serial.println(title);
   
+}
+ 
+
+void loop() {
+
     int ans ;
 
     ans = IRrecive() ;                      // 赤外線リモコンのデータを受信する
-    
-    Serial.println("ans => ");
-    Serial.println(ans);
-    
     if (ans != 0) Serial.println(ans,HEX) ; // リモコンからデータを受信したら表示する
 
-    // counter 
-    Serial.println("count => ");
-    Serial.println(count);
+    ///////////////////////////////////
+  //
+  // LEDs
+  //
+  ///////////////////////////////////
     
-    count ++;
+//    if (ans == 0x3D) {
+//
+//    Serial.println("ans => 0x3D");
+//    
+//    digitalWrite(LED_1, HIGH);
+//
+//  } else {//if (ans == 0x3D)
+//    
+//    digitalWrite(LED_1, LOW);
+//    
+//  }//if (ans == 0x3D)
     
-    // resume interrupts
-    sei();
+//    digitalWrite(LED_1, LOW);
+//    delay(100);
+//    
+//    digitalWrite(LED_1, HIGH);
+//    delay(100);
+    
+  switch(ans) {
   
-}//void interruptsw()
+  case 0x3D:
+    
+    digitalWrite(LED_1, LOW);
+    digitalWrite(LED_2, LOW);
+  
+    break;
+  
+  case 0xA2:
+    
+    digitalWrite(LED_1, LOW);
+    digitalWrite(LED_2, HIGH);
+    
+    break;
+    
+  case 0x90:
+    
+    digitalWrite(LED_1, HIGH);
+    digitalWrite(LED_2, LOW);
+    
+    break;
+    
+  case 0x9A:
+    
+    digitalWrite(LED_1, HIGH);
+    digitalWrite(LED_2, HIGH);
+    
+    break;
+    
+  default:
+    
+//    digitalWrite(LED_1, LOW);
+//    digitalWrite(LED_2, LOW);
+    
+    break;
+    
+  }
+    
+}//void loop()
 
 //赤外線リモコンのデータを受信する処理関数
 int IRrecive() {
@@ -148,40 +214,6 @@ void DspData(int num,char *data) {
    Serial.println(')') ;     
    
 }//DspData(int num,char *data)
-
-void setup()
-{
-  
-  Serial.begin(SERIAL_RATE);
-
-  ///////////////////////////////////
-  //
-  // pins
-  //
-  ///////////////////////////////////
-  pinMode(LED_OUT, OUTPUT);       
-  
-  attachInterrupt(0, interruptsw, FALLING );  // 0 --> pin 2; 1 --> pin 3
-  
-  ///////////////////////////////////
-  //
-  // splash
-  //
-  ///////////////////////////////////
-  Serial.println(title);
-  
-}
- 
-
-void loop() {
-  
-}//void loop()
-
-
-
-
-
-
 
 
 
